@@ -11,7 +11,7 @@ import java.util.Set;
  * Created by Henry on 12/30/2014.
  */
 public class Botss extends PircBot {
-    private final String commandPrefix = "]";
+    public static final String commandPrefix = "]";
 
     public HashMap<String, Command> commands = new HashMap<>();
 
@@ -180,5 +180,9 @@ public class Botss extends PircBot {
         }
 
         users.remove(nick);
+    }
+
+    public void sendFormattedMessage(BotUser user, String target, String message) {
+        sendMessage(target, message);
     }
 }
