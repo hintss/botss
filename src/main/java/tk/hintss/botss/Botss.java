@@ -1,9 +1,11 @@
 package tk.hintss.botss;
 
+import org.jibble.pircbot.IrcException;
 import org.jibble.pircbot.PircBot;
 import org.jibble.pircbot.User;
 import org.reflections.Reflections;
 
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Set;
 
@@ -136,6 +138,29 @@ public class Botss extends PircBot {
     @Override
     protected void onTopic(String channel, String topic, String setBy, long date, boolean changed) {
         channels.get(channel).setTopic(topic, date, setBy);
+    }
+
+    @Override
+    protected void onDisconnect() {
+        Set<String> channelsList = channels.keySet();
+
+        channels.clear();
+        users.clear();
+
+        try {
+            reconnect();
+        } catch (IOException | IrcException e) {
+            e.printStackTrace();
+        }
+
+        StringBuilder sb = new StringBuilder();
+
+        for (String channel : channelsList) {
+            sb.append(channel);
+            sb.append(",");
+        }
+
+        joinChannel(sb.toString());
     }
 
     /**
