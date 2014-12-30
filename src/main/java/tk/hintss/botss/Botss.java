@@ -24,6 +24,7 @@ public class Botss extends PircBot {
         this.setFinger("hintss");
         this.setLogin("hintss");
         this.setVersion("botss by hintss, using PircBot 1.5.0.");
+        this.setMessageDelay(0);
 
         Reflections reflections = new Reflections("tk.hintss.botss.commands");
 
@@ -47,22 +48,46 @@ public class Botss extends PircBot {
         BotUser botUser = users.get(nick);
         BotChannel botChannel = channels.get(channel);
 
-        if (botUser != null) {
-            botUser.setUser(user);
-            botUser.setHost(host);
+        if (botUser == null) {
+            botUser = new BotUser(nick, user, host);
+        }
 
-            if (message.startsWith(commandPrefix)) {
-                String[] splitWithCommand = message.split(" ");
+        botUser.setUser(user);
+        botUser.setHost(host);
 
-                if (commands.containsKey(splitWithCommand[0].toLowerCase().substring(1))) {
-                    String[] args = new String[splitWithCommand.length - 1];
+        if (message.startsWith(commandPrefix)) {
+            String[] splitWithCommand = message.split(" ");
 
-                    for (int i = 0; i < args.length; i++) {
-                        args[i] = splitWithCommand[i + 1];
-                    }
+            if (commands.containsKey(splitWithCommand[0].toLowerCase().substring(1))) {
+                String[] args = new String[splitWithCommand.length - 1];
 
-                    commands.get(splitWithCommand[0].substring(1).toLowerCase()).execute(this, channel, botUser, botChannel, args);
-                }
+                System.arraycopy(splitWithCommand, 1, args, 0, args.length);
+
+                commands.get(splitWithCommand[0].substring(1).toLowerCase()).execute(this, channel, botUser, botChannel, args);
+            }
+        }
+    }
+
+    @Override
+    protected void onPrivateMessage(String nick, String user, String host, String message) {
+        BotUser botUser = users.get(nick);
+
+        if (botUser == null) {
+            botUser = new BotUser(nick, user, host);
+        }
+
+        botUser.setUser(user);
+        botUser.setHost(host);
+
+        if (message.startsWith(commandPrefix)) {
+            String[] splitWithCommand = message.split(" ");
+
+            if (commands.containsKey(splitWithCommand[0].toLowerCase().substring(1))) {
+                String[] args = new String[splitWithCommand.length - 1];
+
+                System.arraycopy(splitWithCommand, 1, args, 0, args.length);
+
+                commands.get(splitWithCommand[0].substring(1).toLowerCase()).execute(this, nick, botUser, null, args);
             }
         }
     }

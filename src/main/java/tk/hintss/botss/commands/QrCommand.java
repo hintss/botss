@@ -101,7 +101,7 @@ public class QrCommand implements Command {
                     if (getPixelAt(matrix, 2 * x + 1, 2 * y + 1)) {
                         return "▗";
                     } else {
-                        return " ";
+                        return "　";
                     }
                 }
             }
