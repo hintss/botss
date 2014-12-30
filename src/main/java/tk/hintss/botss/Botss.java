@@ -2,13 +2,19 @@ package tk.hintss.botss;
 
 import org.jibble.pircbot.PircBot;
 import org.jibble.pircbot.User;
+import org.reflections.Reflections;
 
 import java.util.HashMap;
+import java.util.Set;
 
 /**
  * Created by Henry on 12/30/2014.
  */
 public class Botss extends PircBot {
+    private final String commandPrefix = "]";
+
+    public HashMap<String, Command> commands = new HashMap<>();
+
     public HashMap<String, BotChannel> channels = new HashMap<>();
     public HashMap<String, BotUser> users = new HashMap<>();
 
@@ -17,6 +23,48 @@ public class Botss extends PircBot {
         this.setAutoNickChange(true);
         this.setFinger("hintss");
         this.setLogin("hintss");
+        this.setVersion("botss by hintss, using PircBot 1.5.0.");
+
+        Reflections reflections = new Reflections("tk.hintss.botss.commands");
+
+        Set<Class<? extends Command>> commandClasses = reflections.getSubTypesOf(Command.class);
+
+        for (Class commandClass : commandClasses) {
+            try {
+                Command command = (Command) commandClass.newInstance();
+
+                commands.put(command.getCommand().toLowerCase(), command);
+
+                System.out.println("loaded " + command.getCommand().toLowerCase());
+            } catch (InstantiationException | IllegalAccessException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    @Override
+    protected void onMessage(String channel, String nick, String user, String host, String message) {
+        BotUser botUser = users.get(nick);
+        BotChannel botChannel = channels.get(channel);
+
+        if (botUser != null) {
+            botUser.setUser(user);
+            botUser.setHost(host);
+
+            if (message.startsWith(commandPrefix)) {
+                String[] splitWithCommand = message.split(" ");
+
+                if (commands.containsKey(splitWithCommand[0].toLowerCase().substring(1))) {
+                    String[] args = new String[splitWithCommand.length - 1];
+
+                    for (int i = 0; i < args.length; i++) {
+                        args[i] = splitWithCommand[i + 1];
+                    }
+
+                    commands.get(splitWithCommand[0].substring(1).toLowerCase()).execute(this, channel, botUser, botChannel, args);
+                }
+            }
+        }
     }
 
     @Override

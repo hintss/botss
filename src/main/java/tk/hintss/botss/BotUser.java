@@ -9,8 +9,8 @@ import java.util.Set;
 public class BotUser {
     private String nick;
 
-    private String user;
-    private String host;
+    private String user = "unknownuser";
+    private String host = "unknownhost";
 
     private final Set<BotChannel> channels = new HashSet<>();
 
@@ -47,6 +47,10 @@ public class BotUser {
 
     public void setHost(String host) {
         this.host = host;
+    }
+
+    public String getHostmask() {
+        return (getNick() + "!" + getUser() + "@" + getHost());
     }
 
     public Set<BotChannel> getChannels() {
