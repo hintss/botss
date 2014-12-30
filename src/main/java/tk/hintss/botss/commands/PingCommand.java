@@ -11,7 +11,7 @@ import tk.hintss.botss.Command;
  */
 public class PingCommand implements Command {
     @Override
-    public void execute(Botss bot, String target, BotUser user, BotChannel channel, String[] args) {
+    public void execute(Botss bot, String target, BotUser user, BotChannel channel, String... args) {
         bot.sendFormattedMessage(user, target, "PONG!");
     }
 

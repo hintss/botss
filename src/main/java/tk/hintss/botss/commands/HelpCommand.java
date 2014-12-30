@@ -11,7 +11,7 @@ import tk.hintss.botss.Command;
  */
 public class HelpCommand implements Command {
     @Override
-    public void execute(Botss bot, String target, BotUser user, BotChannel channel, String[] args) {
+    public void execute(Botss bot, String target, BotUser user, BotChannel channel, String... args) {
         if (args.length == 0) {
             StringBuilder sb = new StringBuilder("Available commands: ");
 

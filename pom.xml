@@ -8,6 +8,17 @@
     <artifactId>botss</artifactId>
     <version>1.0-SNAPSHOT</version>
 
+    <repositories>
+        <repository>
+            <id>api-v1-client-java-mvn-repo</id>
+            <url>https://raw.githubusercontent.com/blockchain/api-v1-client-java/mvn-repo/</url>
+            <snapshots>
+                <enabled>true</enabled>
+                <updatePolicy>always</updatePolicy>
+            </snapshots>
+        </repository>
+    </repositories>
+
     <dependencies>
         <dependency>
             <groupId>pircbot</groupId>
@@ -18,6 +29,16 @@
             <groupId>org.reflections</groupId>
             <artifactId>reflections</artifactId>
             <version>0.9.9</version>
+        </dependency>
+        <dependency>
+            <groupId>info.blockchain</groupId>
+            <artifactId>api</artifactId>
+            <version>LATEST</version>
+        </dependency>
+        <dependency>
+            <groupId>com.google.zxing</groupId>
+            <artifactId>core</artifactId>
+            <version>LATEST</version>
         </dependency>
     </dependencies>
 
