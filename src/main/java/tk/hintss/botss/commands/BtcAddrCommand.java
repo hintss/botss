@@ -18,14 +18,12 @@ import java.text.DecimalFormat;
 public class BtcAddrCommand implements Command {
     @Override
     public void execute(Botss bot, String target, BotUser user, BotChannel channel, String... args) {
-        String addr;
-
-        if (args.length == 1) {
-            addr = args[0];
-        } else {
-            bot.sendFormattedMessage(user, target, Colors.RED + "Please specify a bitcoin address!");
+        if (args.length == 0) {
+            HelpCommand.sendHelp(bot, user, target, getCommand());
             return;
         }
+
+        String addr = args[0];
 
         BlockExplorer blockExplorer = new BlockExplorer();
 

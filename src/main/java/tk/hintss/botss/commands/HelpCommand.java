@@ -39,4 +39,8 @@ public class HelpCommand implements Command {
     public String getHelpText() {
         return "help [command]" + Colors.BOLD + " - Retrieves either the list of commands, or the help text for the specified command.";
     }
+
+    public static void sendHelp(Botss bot, BotUser user, String target, String command) {
+        bot.sendFormattedMessage(user, target, Colors.BOLD + Botss.commandPrefix + bot.commands.get(command.toLowerCase()).getHelpText());
+    }
 }

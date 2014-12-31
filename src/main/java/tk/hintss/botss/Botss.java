@@ -26,7 +26,7 @@ public class Botss extends PircBot {
         this.setFinger("hintss");
         this.setLogin("hintss");
         this.setVersion("botss by hintss, using PircBot 1.5.0.");
-        this.setMessageDelay(0);
+        this.setMessageDelay(500);
 
         Reflections reflections = new Reflections("tk.hintss.botss.commands");
 

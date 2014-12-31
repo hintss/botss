@@ -17,6 +17,11 @@ import tk.hintss.botss.Command;
 public class QrCommand implements Command {
     @Override
     public void execute(Botss bot, String target, BotUser user, BotChannel channel, String... args) {
+        if (args.length == 0) {
+            HelpCommand.sendHelp(bot, user, target, getCommand());
+            return;
+        }
+
         StringBuilder sb = new StringBuilder();
 
         for (String s : args) {
@@ -37,89 +42,36 @@ public class QrCommand implements Command {
                     line.append(charAt(matrix, j, i));
                 }
 
-                bot.sendMessage(target, line.toString());
+                bot.sendMessage(user.getNick(), line.toString());
             }
         } catch (WriterException e) {
             bot.sendFormattedMessage(user, target, e.getMessage());
         }
     }
 
-    private String charAt(ByteMatrix matrix, int x, int y) {
-        if (getPixelAt(matrix, 2 * x, 2 * y)) {
-            if (getPixelAt(matrix, 2 * x, 2 * y + 1)) {
-                if (getPixelAt(matrix, 2 * x + 1, 2 * y)) {
-                    if (getPixelAt(matrix, 2 * x + 1, 2 * y + 1)) {
-                        return "█";
-                    } else {
-                        return "▛";
-                    }
-                } else {
-                    if (getPixelAt(matrix, 2 * x + 1, 2 * y + 1)) {
-                        return "▙";
-                    } else {
-                        return "▌";
-                    }
-                }
-            } else {
-                if (getPixelAt(matrix, 2 * x + 1, 2 * y)) {
-                    if (getPixelAt(matrix, 2 * x + 1, 2 * y + 1)) {
-                        return "▜";
-                    } else {
-                        return "▀";
-                    }
-                } else {
-                    if (getPixelAt(matrix, 2 * x + 1, 2 * y + 1)) {
-                        return "▚";
-                    } else {
-                        return "▘";
-                    }
-                }
-            }
-        } else {
-            if (getPixelAt(matrix, 2 * x, 2 * y + 1)) {
-                if (getPixelAt(matrix, 2 * x + 1, 2 * y)) {
-                    if (getPixelAt(matrix, 2 * x + 1, 2 * y + 1)) {
-                        return "▟";
-                    } else {
-                        return "▞";
-                    }
-                } else {
-                    if (getPixelAt(matrix, 2 * x + 1, 2 * y + 1)) {
-                        return "▄";
-                    } else {
-                        return "▖";
-                    }
-                }
-            } else {
-                if (getPixelAt(matrix, 2 * x + 1, 2 * y)) {
-                    if (getPixelAt(matrix, 2 * x + 1, 2 * y + 1)) {
-                        return "▐";
-                    } else {
-                        return "▝";
-                    }
-                } else {
-                    if (getPixelAt(matrix, 2 * x + 1, 2 * y + 1)) {
-                        return "▗";
-                    } else {
-                        return "　";
-                    }
-                }
-            }
-        }
+    private char charAt(ByteMatrix matrix, int x, int y) {
+        int index = getPixelAt(matrix, 2 * x + 1, 2 * y + 1) | getPixelAt(matrix, 2 * x + 1, 2 * y) << 1 | getPixelAt(matrix, 2 * x, 2 * y + 1) << 2 |  getPixelAt(matrix, 2 * x, 2 * y) << 3;
+        String codes = " ▗▝▐▖▄▞▟▘▚▀▜▌▙▛█";
+
+        return codes.charAt(index);
     }
 
-    private boolean getPixelAt(ByteMatrix matrix, int x, int y) {
+    private int getPixelAt(ByteMatrix matrix, int x, int y) {
         if (x < 0) {
-            return false;
+            return 0;
         } else if (y < 0) {
-            return false;
+            return 0;
         } else if (x >= matrix.getWidth()) {
-            return false;
+            return 0;
         } else if (y >= matrix.getHeight()) {
-            return false;
+            return 0;
         }
 
-        return (matrix.get(x, y) == 1);
+        if (matrix.get(x, y) == 1) {
+            return 1;
+        } else {
+            return 0;
+        }
     }
 
     @Override
