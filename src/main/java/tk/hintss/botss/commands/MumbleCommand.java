@@ -31,8 +31,15 @@ public class MumbleCommand implements Command {
         if (args.length == 2) {
             try {
                 port = Integer.parseInt(args[1]);
+
+                if (port < 1 || port > 65535) {
+                    bot.sendFormattedMessage(user, target, Colors.RED + "Invalid port number '" + port + "'!");
+
+                    return;
+                }
             } catch (NumberFormatException ex) {
-                HelpCommand.sendHelp(bot, user, target, getCommand());
+                bot.sendFormattedMessage(user, target, Colors.RED + "Invalid port number '" + port + "'!");
+
                 return;
             }
         }
