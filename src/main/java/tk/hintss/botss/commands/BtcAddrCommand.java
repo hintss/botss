@@ -15,7 +15,7 @@ import java.text.DecimalFormat;
 /**
  * Created by Henry on 12/30/2014.
  */
-public class BtcAddrCommand implements Command {
+public class BtcAddrCommand extends Command {
     @Override
     public void execute(Botss bot, String target, BotUser user, BotChannel channel, String... args) {
         if (args.length == 0) {
@@ -49,5 +49,10 @@ public class BtcAddrCommand implements Command {
     @Override
     public String getHelpText() {
         return "btcaddr <bitcoin address>" + Colors.BOLD + " - gets bitcoin address info";
+    }
+
+    @Override
+    public String[] getAliases() {
+        return new String[] {"btc", "bitcoin"};
     }
 }

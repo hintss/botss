@@ -9,7 +9,7 @@ import tk.hintss.botss.Command;
 /**
  * Created by Henry on 12/30/2014.
  */
-public class PingCommand implements Command {
+public class PingCommand extends Command {
     @Override
     public void execute(Botss bot, String target, BotUser user, BotChannel channel, String... args) {
         bot.sendFormattedMessage(user, target, "PONG!");

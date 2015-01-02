@@ -38,6 +38,10 @@ public class Botss extends PircBot {
 
                 commands.put(command.getCommand().toLowerCase(), command);
 
+                for (String alias : command.getAliases()) {
+                    commands.put(alias.toLowerCase(), command);
+                }
+
                 System.out.println("loaded " + command.getCommand().toLowerCase());
             } catch (InstantiationException | IllegalAccessException e) {
                 e.printStackTrace();
