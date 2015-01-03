@@ -16,6 +16,7 @@ public class Botss extends PircBot {
     public static final String commandPrefix = "]";
 
     public HashMap<String, Command> commands = new HashMap<>();
+    public HashMap<String, String> aliases = new HashMap<>();
 
     public HashMap<String, BotChannel> channels = new HashMap<>();
     public HashMap<String, BotUser> users = new HashMap<>();
@@ -39,7 +40,7 @@ public class Botss extends PircBot {
                 commands.put(command.getCommand().toLowerCase(), command);
 
                 for (String alias : command.getAliases()) {
-                    commands.put(alias.toLowerCase(), command);
+                    aliases.put(alias.toLowerCase(), command.getCommand().toLowerCase());
                 }
 
                 System.out.println("loaded " + command.getCommand().toLowerCase());
@@ -64,6 +65,10 @@ public class Botss extends PircBot {
         if (message.startsWith(commandPrefix)) {
             String[] splitWithCommand = message.split(" ");
 
+            if (aliases.containsKey(splitWithCommand[0].toLowerCase())) {
+                splitWithCommand[0] = aliases.get(splitWithCommand[0].toLowerCase());
+            }
+
             if (commands.containsKey(splitWithCommand[0].toLowerCase().substring(1))) {
                 String[] args = new String[splitWithCommand.length - 1];
 
@@ -87,6 +92,10 @@ public class Botss extends PircBot {
 
         if (message.startsWith(commandPrefix)) {
             String[] splitWithCommand = message.split(" ");
+
+            if (aliases.containsKey(splitWithCommand[0].toLowerCase())) {
+                splitWithCommand[0] = aliases.get(splitWithCommand[0].toLowerCase());
+            }
 
             if (commands.containsKey(splitWithCommand[0].toLowerCase().substring(1))) {
                 String[] args = new String[splitWithCommand.length - 1];
