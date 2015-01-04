@@ -25,20 +25,22 @@ public class BtcAddrCommand extends Command {
 
         String addr = args[0];
 
-        BlockExplorer blockExplorer = new BlockExplorer();
+        new Thread(() -> {
+            try {
+                BlockExplorer blockExplorer = new BlockExplorer();
 
-        try {
-            Address address = blockExplorer.getAddress(addr);
-            bot.sendFormattedMessage(user, target, "BTC: " + Colors.BOLD + address.getAddress() + Colors.BOLD
-                    + " Final Balance: " + Colors.BOLD + new DecimalFormat("#").format(address.getFinalBalance() / 100000000D) + Colors.BOLD
-                    + " Total Received: " + Colors.BOLD + new DecimalFormat("#").format(address.getTotalReceived() / 100000000D) + Colors.BOLD
-                    + " Total Sent: " + Colors.BOLD + address.getTotalSent() + Colors.BOLD
-                    + " Blockchain.info: " + Colors.BOLD + "https://blockchain.info/address/" + address.getAddress());
-        } catch (APIException e) {
-            bot.sendFormattedMessage(user, target, Colors.RED + "APIException: " + e.getMessage());
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+                Address address = blockExplorer.getAddress(addr);
+                bot.sendFormattedMessage(user, target, "BTC: " + Colors.BOLD + address.getAddress() + Colors.BOLD
+                        + " Final Balance: " + Colors.BOLD + new DecimalFormat("#").format(address.getFinalBalance() / 100000000D) + Colors.BOLD
+                        + " Total Received: " + Colors.BOLD + new DecimalFormat("#").format(address.getTotalReceived() / 100000000D) + Colors.BOLD
+                        + " Total Sent: " + Colors.BOLD + address.getTotalSent() + Colors.BOLD
+                        + " Blockchain.info: " + Colors.BOLD + "https://blockchain.info/address/" + address.getAddress());
+            } catch (APIException e) {
+                bot.sendFormattedMessage(user, target, Colors.RED + "APIException: " + e.getMessage());
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }).start();
     }
 
     @Override
