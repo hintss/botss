@@ -46,7 +46,7 @@ public class MinecraftPingCommand extends Command {
         new Thread(() -> {
             try {
                 MinecraftPingReply data = new MinecraftPing().getPing(new MinecraftPingOptions().setHostname(ip).setPort(port));
-                bot.sendFormattedMessage(user, target, "'" + Colors.BOLD + ip + Colors.BOLD + "' - " + data.getVersion().getName() + " - " + Colors.BOLD + data.getPlayers().getOnline() + "/" + data.getPlayers().getMax() + Colors.BOLD + " - " + data.getDescription());
+                bot.sendFormattedMessage(user, target, "'" + ip + "' - " + data.getPlayers().getOnline() + "/" + data.getPlayers().getMax() + " - " + data.getVersion().getName() + " - " + data.getDescription());
             } catch (IOException e) {
                 bot.sendFormattedMessage(user, target, Colors.RED + "Couldn't connect to '" + Colors.BOLD + args[0] + Colors.BOLD + "' on " + Colors.BOLD + port);
             }
