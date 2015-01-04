@@ -10,7 +10,7 @@ import tk.hintss.botss.util.NumberUtil;
 /**
  * Created by Henry on 1/2/2015.
  */
-public class LuhnSum extends Command {
+public class LuhnCheckCommand extends Command {
     @Override
     public void execute(Botss bot, String target, BotUser user, BotChannel channel, String... args) {
         if (args.length == 0) {
@@ -27,16 +27,20 @@ public class LuhnSum extends Command {
             return;
         }
 
-        bot.sendFormattedMessage(user, target, "Luhn sum for " + args[0] + " = " + NumberUtil.luhnSum(input));
+        if (NumberUtil.luhnCheck(input)) {
+            bot.sendFormattedMessage(user, target, "Luhn sum for " + args[0] + " checks out!");
+        } else {
+            bot.sendFormattedMessage(user, target, "Luhn sum for " + args[0] + " doesn't match!");
+        }
     }
 
     @Override
     public String getCommand() {
-        return "luhnsum";
+        return "luhncheck";
     }
 
     @Override
     public String getHelpText() {
-        return "luhnsum <number>" + Colors.BOLD + " - Calculates the luhn sum of a number.";
+        return "luhncheck <number>" + Colors.BOLD + " - Verifies the luhn sum of a number.";
     }
 }
