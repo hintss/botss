@@ -63,18 +63,18 @@ public class Botss extends PircBot {
         botUser.setHost(host);
 
         if (message.startsWith(commandPrefix)) {
-            String[] splitWithCommand = message.split(" ");
+            String[] splitWithCommand = message.substring(1).split(" ");
 
             if (aliases.containsKey(splitWithCommand[0].toLowerCase())) {
                 splitWithCommand[0] = aliases.get(splitWithCommand[0].toLowerCase());
             }
 
-            if (commands.containsKey(splitWithCommand[0].toLowerCase().substring(1))) {
+            if (commands.containsKey(splitWithCommand[0].toLowerCase())) {
                 String[] args = new String[splitWithCommand.length - 1];
 
                 System.arraycopy(splitWithCommand, 1, args, 0, args.length);
 
-                commands.get(splitWithCommand[0].substring(1).toLowerCase()).execute(this, channel, botUser, botChannel, args);
+                commands.get(splitWithCommand[0].toLowerCase()).execute(this, channel, botUser, botChannel, args);
             }
         }
     }
