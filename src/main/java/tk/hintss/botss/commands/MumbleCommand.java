@@ -26,7 +26,7 @@ public class MumbleCommand extends Command {
         }
 
         String ip = args[0];
-        int port = 64738;
+        final int port;
 
         if (args.length == 2) {
             try {
@@ -38,42 +38,46 @@ public class MumbleCommand extends Command {
                     return;
                 }
             } catch (NumberFormatException ex) {
-                bot.sendFormattedMessage(user, target, Colors.RED + "Invalid port number '" + port + "'!");
+                bot.sendFormattedMessage(user, target, Colors.RED + "Invalid port number '" + args[1] + "'!");
 
                 return;
             }
+        } else {
+            port = 64738;
         }
 
-        try {
-            DatagramSocket clientsocket = new DatagramSocket();
-            clientsocket.setSoTimeout(2000);
+        new Thread(() -> {
+            try {
+                DatagramSocket clientsocket = new DatagramSocket();
+                clientsocket.setSoTimeout(2000);
 
-            InetAddress ipaddress = InetAddress.getByName(ip);
+                InetAddress ipaddress = InetAddress.getByName(ip);
 
-            byte[] sendData = "\000\000\000\000\000\000\000\000\000\000\000\000".getBytes();
-            DatagramPacket sendPacket = new DatagramPacket(sendData, sendData.length, ipaddress, port);
-            clientsocket.send(sendPacket);
+                byte[] sendData = "\000\000\000\000\000\000\000\000\000\000\000\000".getBytes();
+                DatagramPacket sendPacket = new DatagramPacket(sendData, sendData.length, ipaddress, port);
+                clientsocket.send(sendPacket);
 
-            byte[] receiveData = new byte[1024];
-            DatagramPacket receivePacket = new DatagramPacket(receiveData, receiveData.length);
-            clientsocket.receive(receivePacket);
-            clientsocket.close();
+                byte[] receiveData = new byte[1024];
+                DatagramPacket receivePacket = new DatagramPacket(receiveData, receiveData.length);
+                clientsocket.receive(receivePacket);
+                clientsocket.close();
 
-            ByteArrayInputStream packets = new ByteArrayInputStream(receivePacket.getData());
-            DataInputStream data = new DataInputStream(packets);
+                ByteArrayInputStream packets = new ByteArrayInputStream(receivePacket.getData());
+                DataInputStream data = new DataInputStream(packets);
 
-            data.readInt();
-            data.readLong();
+                data.readInt();
+                data.readLong();
 
-            int currentUsers = data.readInt();
-            int maxUsers = data.readInt();
+                int currentUsers = data.readInt();
+                int maxUsers = data.readInt();
 
-            bot.sendFormattedMessage(user, target, "'" + Colors.BOLD + ip + Colors.BOLD + "' currently has " + Colors.BOLD + currentUsers + "/" + maxUsers + Colors.BOLD + " users online.");
-        } catch (UnknownHostException e) {
-            bot.sendFormattedMessage(user, target, Colors.RED + "Couldn't resolve '" + Colors.BOLD + args[0] + Colors.BOLD + "'");
-        } catch (IOException e) {
-            bot.sendFormattedMessage(user, target, Colors.RED + "Couldn't connect to '" + Colors.BOLD + args[0] + Colors.BOLD + "' on " + Colors.BOLD + port);
-        }
+                bot.sendFormattedMessage(user, target, "'" + Colors.BOLD + ip + Colors.BOLD + "' currently has " + Colors.BOLD + currentUsers + "/" + maxUsers + Colors.BOLD + " users online.");
+            } catch (UnknownHostException e) {
+                bot.sendFormattedMessage(user, target, Colors.RED + "Couldn't resolve '" + Colors.BOLD + args[0] + Colors.BOLD + "'");
+            } catch (IOException e) {
+                bot.sendFormattedMessage(user, target, Colors.RED + "Couldn't connect to '" + Colors.BOLD + args[0] + Colors.BOLD + "' on " + Colors.BOLD + port);
+            }
+        }).start();
     }
 
     @Override
