@@ -160,11 +160,17 @@ public class Botss extends PircBot {
         channels.clear();
         users.clear();
 
-        try {
-            reconnect();
-        } catch (IOException | IrcException e) {
-            e.printStackTrace();
+        boolean connected = false;
+
+        while (!connected) {
+            try {
+                reconnect();
+                connected = true;
+            } catch (IOException | IrcException e) {
+                e.printStackTrace();
+            }
         }
+
 
         StringBuilder sb = new StringBuilder();
 
