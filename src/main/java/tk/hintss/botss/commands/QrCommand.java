@@ -51,9 +51,9 @@ public class QrCommand extends Command {
 
     private char charAt(ByteMatrix matrix, int x, int y) {
         int index = getPixelAt(matrix, 2 * x + 1, 2 * y + 1) | getPixelAt(matrix, 2 * x + 1, 2 * y) << 1 | getPixelAt(matrix, 2 * x, 2 * y + 1) << 2 |  getPixelAt(matrix, 2 * x, 2 * y) << 3;
-        String codes = " ▗▝▐▖▄▞▟▘▚▀▜▌▙▛█";
+        char[] codes = {' ', '▗', '▝', '▐', '▖', '▄', '▞', '▟', '▘', '▚', '▀', '▜', '▌', '▙', '▛', '█'};
 
-        return codes.charAt(index);
+        return codes[index];
     }
 
     private int getPixelAt(ByteMatrix matrix, int x, int y) {
