@@ -9,9 +9,9 @@ import tk.hintss.botss.Command;
 import java.util.Base64;
 
 /**
- * Created by Henry on 1/5/2015.
+ * Created by Henry on 1/6/2015.
  */
-public class Base64EncodeCommand extends Command {
+public class Base64DecodeCommand extends Command {
     @Override
     public void execute(Botss bot, String target, BotUser user, BotChannel channel, String... args) {
         if (args.length == 0) {
@@ -19,30 +19,23 @@ public class Base64EncodeCommand extends Command {
             return;
         }
 
-        StringBuilder sb = new StringBuilder();
+        String decoded = new String(Base64.getDecoder().decode(args[0].getBytes()));
 
-        for (String arg : args) {
-            sb.append(" ");
-            sb.append(arg);
-        }
-
-        String output = new String(Base64.getEncoder().encode(sb.substring(1).getBytes()));
-
-        bot.sendFormattedMessage(user, target, Colors.BOLD + "Encodes to: " + Colors.BOLD + output);
+        bot.sendFormattedMessage(user, target, Colors.BOLD + "Decodes to: " + Colors.BOLD + decoded);
     }
 
     @Override
     public String getCommand() {
-        return "base64encode";
+        return "base64decode";
     }
 
     @Override
     public String getHelpText() {
-        return "base64encode <text>" + Colors.BOLD + " - encodes a string in base64";
+        return "base64decode <text>" + Colors.BOLD + " - decodes a string from base64";
     }
 
     @Override
     public String[] getAliases() {
-        return new String[] {"b64e"};
+        return new String[] {"b64d"};
     }
 }
