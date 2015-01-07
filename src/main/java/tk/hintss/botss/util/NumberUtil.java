@@ -20,17 +20,6 @@ public class NumberUtil {
         return digits.toArray(new Short[digits.size()]);
     }
 
-    public static int sumDigits(int input) {
-        int result = 0;
-
-        while (input > 0) {
-            result += (input % 10);
-            input /= 10;
-        }
-
-        return result;
-    }
-
     public static short luhnSum(long number) {
         Short[] digits = numberToDigitArray(number);
 
