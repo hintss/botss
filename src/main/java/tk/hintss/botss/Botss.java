@@ -252,6 +252,7 @@ public class Botss extends PircBot {
     }
 
     public void sendFormattedMessage(BotUser user, String target, String message) {
+        message = message.replace("\7", "␇"); // replace bels with the bel representative
         sendMessage(target, message);
     }
 }
