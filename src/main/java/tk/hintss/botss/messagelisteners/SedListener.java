@@ -23,6 +23,7 @@ public class SedListener extends MessageListener {
                     for (int i = 3; i < message.length(); i++) {
                         if (message.charAt(i) == '/') {
                             split = i;
+                            break;
                         } else if (message.charAt(i) == '\\') {
                             // skip the / if there's a \ in front
                             i++;
