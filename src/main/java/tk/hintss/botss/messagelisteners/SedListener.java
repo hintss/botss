@@ -55,7 +55,9 @@ public class SedListener extends MessageListener {
                             }
                         }
 
-                        bot.sendFormattedMessage(bm.getSender(), target, bm.getIrcForm().replace(from, to));
+                        if (replace != null) {
+                            bot.sendFormattedMessage(bm.getSender(), target, replace.getIrcForm().replace(from, to));
+                        }
                     }
                 }
             }
