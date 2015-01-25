@@ -1,5 +1,6 @@
 package tk.hintss.botss;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -9,10 +10,12 @@ import java.util.Set;
 public class BotUser {
     private String nick;
 
-    private String user = "unknownuser";
-    private String host = "unknownhost";
+    private String user;
+    private String host;
 
     private final Set<BotChannel> channels = new HashSet<>();
+
+    private final MessageQueue lastMessages = new MessageQueue(20);
 
     public BotUser(String nick) {
         this.nick = nick;
@@ -55,5 +58,13 @@ public class BotUser {
 
     public Set<BotChannel> getChannels() {
         return channels;
+    }
+
+    public void said(BotMessage message) {
+        lastMessages.addMessage(message);
+    }
+
+    public ArrayList<BotMessage> getLastMessages() {
+        return lastMessages.getMessages();
     }
 }

@@ -1,5 +1,6 @@
 package tk.hintss.botss;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -16,6 +17,8 @@ public class BotChannel {
     private String modes;
 
     private final Set<BotUser> users = new HashSet<>();
+
+    private final MessageQueue lastMessages = new MessageQueue(20);
 
     public BotChannel(String name) {
         this.name = name;
@@ -46,5 +49,13 @@ public class BotChannel {
 
     public Set<BotUser> getUsers() {
         return users;
+    }
+
+    public void said(BotMessage message) {
+        lastMessages.addMessage(message);
+    }
+
+    public ArrayList<BotMessage> getLastMessages() {
+        return lastMessages.getMessages();
     }
 }

@@ -6,6 +6,7 @@ import org.jibble.pircbot.User;
 import org.reflections.Reflections;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Set;
 
@@ -17,6 +18,8 @@ public class Botss extends PircBot {
 
     public HashMap<String, Command> commands = new HashMap<>();
     public HashMap<String, String> aliases = new HashMap<>();
+
+    public ArrayList<MessageListener> listeners = new ArrayList<>();
 
     public HashMap<String, BotChannel> channels = new HashMap<>();
     public HashMap<String, BotUser> users = new HashMap<>();
@@ -48,19 +51,57 @@ public class Botss extends PircBot {
                 e.printStackTrace();
             }
         }
+
+        reflections = new Reflections("tk.hintss.botss.messagelisteners");
+
+        Set<Class<? extends MessageListener>> messageListeners = reflections.getSubTypesOf(MessageListener.class);
+
+        for (Class messageListener : messageListeners) {
+            try {
+                MessageListener listener = (MessageListener) messageListener.newInstance();
+
+                listeners.add(listener);
+
+                System.out.println("loaded " + messageListener.getSimpleName());
+            } catch (InstantiationException | IllegalAccessException e) {
+                e.printStackTrace();
+            }
+        }
     }
 
     @Override
     protected void onMessage(String channel, String nick, String user, String host, String message) {
+        processMessage(nick, user, host, channel, message);
+    }
+
+    @Override
+    protected void onPrivateMessage(String nick, String user, String host, String message) {
+        processMessage(nick, user, host, nick, message);
+    }
+
+    public void processMessage(String nick, String user, String host, String target, String message) {
         BotUser botUser = users.get(nick);
-        BotChannel botChannel = channels.get(channel);
+
+        BotChannel botChannel = null;
+
+        if (target != null) {
+            botChannel = channels.get(target);
+        }
 
         if (botUser == null) {
             botUser = new BotUser(nick, user, host);
         }
 
+        // if we picked up this user in the initial channel burst, we won't have their hostmask
         botUser.setUser(user);
         botUser.setHost(host);
+
+        BotMessage bm = new BotMessage(message, botUser, botChannel);
+        botUser.said(bm);
+
+        if (botChannel != null) {
+            botChannel.said(bm);
+        }
 
         if (message.startsWith(commandPrefix)) {
             String[] splitWithCommand = message.substring(1).split(" ");
@@ -74,35 +115,11 @@ public class Botss extends PircBot {
 
                 System.arraycopy(splitWithCommand, 1, args, 0, args.length);
 
-                commands.get(splitWithCommand[0].toLowerCase()).execute(this, channel, botUser, botChannel, args);
+                commands.get(splitWithCommand[0].toLowerCase()).execute(this, target, botUser, botChannel, args);
             }
-        }
-    }
-
-    @Override
-    protected void onPrivateMessage(String nick, String user, String host, String message) {
-        BotUser botUser = users.get(nick);
-
-        if (botUser == null) {
-            botUser = new BotUser(nick, user, host);
-        }
-
-        botUser.setUser(user);
-        botUser.setHost(host);
-
-        if (message.startsWith(commandPrefix)) {
-            String[] splitWithCommand = message.split(" ");
-
-            if (aliases.containsKey(splitWithCommand[0].toLowerCase())) {
-                splitWithCommand[0] = aliases.get(splitWithCommand[0].toLowerCase());
-            }
-
-            if (commands.containsKey(splitWithCommand[0].toLowerCase().substring(1))) {
-                String[] args = new String[splitWithCommand.length - 1];
-
-                System.arraycopy(splitWithCommand, 1, args, 0, args.length);
-
-                commands.get(splitWithCommand[0].substring(1).toLowerCase()).execute(this, nick, botUser, null, args);
+        } else {
+            for (MessageListener listener : listeners) {
+                listener.onMessage(this, target, bm);
             }
         }
     }
