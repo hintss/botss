@@ -45,7 +45,7 @@ public class SedListener extends MessageListener {
                         BotMessage replace = null;
 
                         for (BotMessage candidate : messages) {
-                            if (candidate.getMessage().contains("from")) {
+                            if (candidate.getMessage().contains(from)) {
                                 if (replace == null) {
                                     replace = candidate;
                                 } else {
