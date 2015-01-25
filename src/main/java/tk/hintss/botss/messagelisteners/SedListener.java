@@ -42,12 +42,16 @@ public class SedListener extends MessageListener {
                             messages = bm.getChannel().getLastMessages();
                         }
 
-                        BotMessage replace;
+                        BotMessage replace = null;
 
                         for (BotMessage candidate : messages) {
                             if (candidate.getMessage().contains("from")) {
-                                replace = candidate;
-                                break;
+                                if (replace == null) {
+                                    replace = candidate;
+                                } else {
+                                    replace = candidate;
+                                    break;
+                                }
                             }
                         }
 
