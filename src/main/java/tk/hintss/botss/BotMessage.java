@@ -35,6 +35,6 @@ public class BotMessage {
     }
 
     public String getIrcForm() {
-        return "<" + getSender() + "> " + getMessage();
+        return "<" + getSender().getNick() + "> " + getMessage();
     }
 }
