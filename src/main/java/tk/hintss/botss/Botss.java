@@ -119,7 +119,7 @@ public class Botss extends PircBot {
             }
         } else {
             for (MessageListener listener : listeners) {
-                listener.onMessage(this, target, bm);
+                listener.onMessage(this, bm);
             }
         }
     }
