@@ -1,9 +1,15 @@
 package tk.hintss.botss.messagelisteners;
 
+import info.blockchain.api.APIException;
+import info.blockchain.api.blockexplorer.Address;
+import info.blockchain.api.blockexplorer.BlockExplorer;
+import org.jibble.pircbot.Colors;
 import tk.hintss.botss.BotMessage;
 import tk.hintss.botss.Botss;
 import tk.hintss.botss.MessageListener;
 
+import java.io.IOException;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 
 /**
@@ -11,7 +17,7 @@ import java.util.ArrayList;
  */
 public class SedListener extends MessageListener {
     @Override
-    public void onMessage(Botss bot, String target, BotMessage bm) {
+    public void onMessage(Botss bot, BotMessage bm) {
         String message = bm.getMessage();
         // s/x// (shortest possible) == 4 chars
         if (message.length() > 4) {
@@ -56,7 +62,34 @@ public class SedListener extends MessageListener {
                         }
 
                         if (replace != null) {
-                            bot.sendFormattedMessage(bm.getSender(), target, replace.getIrcForm().replace(from, to));
+                            final BotMessage candidate = replace;
+
+                            new Thread(() -> {
+                                try {
+                                    Thread.sleep(500);
+                                } catch (InterruptedException e) {
+                                    e.printStackTrace();
+                                }
+
+                                ArrayList<BotMessage> newMessages;
+
+                                if (bm.getChannel() == null) {
+                                    newMessages = bm.getSender().getLastMessages();
+                                } else {
+                                    newMessages = bm.getChannel().getLastMessages();
+                                }
+
+                                for (BotMessage newMessage : newMessages) {
+                                    if (newMessage.getTime() < candidate.getTime()) {
+                                        bot.reply(bm, candidate.getIrcForm().replace(from, to));
+                                        break;
+                                    }
+
+                                    if (Colors.removeFormattingAndColors(newMessage.getMessage()).equals(candidate.getMessage().replace(from, to))) {
+                                        break;
+                                    }
+                                }
+                            }).start();
                         }
                     }
                 }
