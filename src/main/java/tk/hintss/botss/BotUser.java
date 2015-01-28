@@ -13,7 +13,7 @@ public class BotUser {
     private String user;
     private String host;
 
-    private final Set<BotChannel> channels = new HashSet<>();
+    private Set<BotChannel> channels = new HashSet<>();
 
     private final MessageQueue lastMessages = new MessageQueue();
     private final MessageQueue lastPrivateMessages = new MessageQueue();
@@ -22,7 +22,7 @@ public class BotUser {
         this.nick = nick;
     }
 
-    public BotUser(String nick, String user, String host) {
+    protected BotUser(String nick, String user, String host) {
         this.nick = nick;
 
         this.user = user;
@@ -57,8 +57,12 @@ public class BotUser {
         return (getNick() + "!" + getUser() + "@" + getHost());
     }
 
-    public Set<BotChannel> getChannels() {
-        return channels;
+    public HashSet<BotChannel> getChannels() {
+        return new HashSet<>(channels);
+    }
+
+    protected void setChannels(HashSet<BotChannel> newChannels) {
+        this.channels = newChannels;
     }
 
     protected void said(BotMessage message) {

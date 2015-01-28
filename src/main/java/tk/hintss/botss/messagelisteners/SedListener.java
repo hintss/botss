@@ -92,7 +92,14 @@ public class SedListener extends MessageListener {
                         }
 
                         if (send) {
-                            bot.reply(bm, candidate.getIrcForm().replace(from, to));
+                            String result = "<" + candidate.getSender().getNick() + "> ";
+
+                            if (FormattingUtil.hasFormatting(candidate.getMessage())) {
+                                result += candidate.getMessage().replace(from, to);
+                            } else {
+                                result += candidate.getMessage().replace(from, Colors.BOLD + to + Colors.BOLD);
+                            }
+                            bot.reply(bm, result);
                         }
                     }).start();
                 }

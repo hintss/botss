@@ -16,15 +16,15 @@ public class BotChannel {
     private long topicChangeTime;
     private String modes;
 
-    private final Set<BotUser> users = new HashSet<>();
+    private Set<BotUser> users = new HashSet<>();
 
-    private final MessageQueue lastMessages = new MessageQueue(20);
+    private final MessageQueue lastMessages = new MessageQueue();
 
-    public BotChannel(String name) {
+    protected BotChannel(String name) {
         this.name = name;
     }
 
-    public void setTopic(String topic, long topicChangeTime, String topicSetter) {
+    protected void setTopic(String topic, long topicChangeTime, String topicSetter) {
         this.topic = topic;
 
         this.topicChangeTime = topicChangeTime;
@@ -47,11 +47,15 @@ public class BotChannel {
         return topicChangeTime;
     }
 
-    public Set<BotUser> getUsers() {
-        return users;
+    public HashSet<BotUser> getUsers() {
+        return new HashSet<>(users);
     }
 
-    public void said(BotMessage message) {
+    protected void setUsers(HashSet<BotUser> newUsers) {
+        this.users = newUsers;
+    }
+
+    protected void said(BotMessage message) {
         lastMessages.addMessage(message);
     }
 

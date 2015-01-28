@@ -8,6 +8,7 @@ import org.reflections.Reflections;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Set;
 
 /**
@@ -216,8 +217,12 @@ public class Botss extends PircBot {
             users.put(nick, botUser);
         }
 
-        botChannel.getUsers().add(botUser);
-        botUser.getChannels().add(botChannel);
+        HashSet<BotUser> channelUsers = botChannel.getUsers();
+        channelUsers.add(botUser);
+        botChannel.setUsers(channelUsers);
+        HashSet<BotChannel> userChannels = botUser.getChannels();
+        userChannels.add(botChannel);
+        botUser.setChannels(userChannels);
     }
 
     /**
@@ -236,8 +241,12 @@ public class Botss extends PircBot {
             users.put(nick, botUser);
         }
 
-        botChannel.getUsers().add(botUser);
-        botUser.getChannels().add(botChannel);
+        HashSet<BotUser> channelUsers = botChannel.getUsers();
+        channelUsers.add(botUser);
+        botChannel.setUsers(channelUsers);
+        HashSet<BotChannel> userChannels = botUser.getChannels();
+        userChannels.add(botChannel);
+        botUser.setChannels(userChannels);
     }
 
     /**
@@ -249,8 +258,12 @@ public class Botss extends PircBot {
         BotUser botUser = users.get(nick);
         BotChannel botChannel = channels.get(channel);
 
-        botUser.getChannels().remove(botChannel);
-        botChannel.getUsers().remove(botUser);
+        HashSet<BotUser> channelUsers = botChannel.getUsers();
+        channelUsers.remove(botUser);
+        botChannel.setUsers(channelUsers);
+        HashSet<BotChannel> userChannels = botUser.getChannels();
+        userChannels.remove(botChannel);
+        botUser.setChannels(userChannels);
 
         if (botUser.getChannels().size() == 0) {
             removeUser(nick);
@@ -265,7 +278,9 @@ public class Botss extends PircBot {
         BotUser user = users.get(nick);
 
         for (BotChannel channel : user.getChannels()) {
-            channel.getUsers().remove(user);
+            HashSet<BotUser> channelUsers = channel.getUsers();
+            channelUsers.remove(user);
+            channel.setUsers(channelUsers);
         }
 
         users.remove(nick);
