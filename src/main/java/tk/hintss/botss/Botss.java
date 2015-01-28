@@ -273,15 +273,15 @@ public class Botss extends PircBot {
         sendMessage(target, message);
     }
 
-    public void reply(BotMessage message, String message) {
+    public void reply(BotMessage bm, String message) {
         String target;
 
-        if (message.getChannel() == null) {
-            target = message.getSender().getNick();
+        if (bm.getChannel() == null) {
+            target = bm.getSender().getNick();
         } else {
-            target = message.getChannel().getName();
+            target = bm.getChannel().getName();
         }
 
-        sendFormattedMessage(message.getSender(), target, message);
+        sendFormattedMessage(bm.getSender(), target, message);
     }
 }
