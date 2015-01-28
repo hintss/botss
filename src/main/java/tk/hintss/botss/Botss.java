@@ -272,4 +272,16 @@ public class Botss extends PircBot {
         message = message.replace("\7", "␇"); // replace bels with the bel representative
         sendMessage(target, message);
     }
+
+    public void reply(BotMessage message, String message) {
+        String target;
+
+        if (message.getChannel() == null) {
+            target = message.getSender().getNick();
+        } else {
+            target = message.getChannel().getName();
+        }
+
+        sendFormattedMessage(message.getSender(), target, message);
+    }
 }
