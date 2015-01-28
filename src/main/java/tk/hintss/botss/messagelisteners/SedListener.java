@@ -7,6 +7,7 @@ import org.jibble.pircbot.Colors;
 import tk.hintss.botss.BotMessage;
 import tk.hintss.botss.Botss;
 import tk.hintss.botss.MessageListener;
+import tk.hintss.botss.util.FormattingUtil;
 
 import java.io.IOException;
 import java.text.DecimalFormat;
@@ -20,78 +21,80 @@ public class SedListener extends MessageListener {
     public void onMessage(Botss bot, BotMessage bm) {
         String message = bm.getMessage();
         // s/x// (shortest possible) == 4 chars
-        if (message.length() > 4) {
-            if (message.startsWith("s/")) {
-                if (message.endsWith("/")) {
-                    // the index of the / in the middle
-                    int split = 2;
+        if (message.length() > 4 && message.startsWith("s/") && message.endsWith("/")) {
+            // the index of the / in the middle
+            int split = 2;
 
-                    for (int i = 3; i < message.length(); i++) {
-                        if (message.charAt(i) == '/') {
-                            split = i;
+            for (int i = 3; i < message.length(); i++) {
+                if (message.charAt(i) == '/') {
+                    split = i;
+                    break;
+                } else if (message.charAt(i) == '\\') {
+                    // skip the character after a \
+                    i++;
+                }
+            }
+
+            if (split < message.length() - 1) {
+                String from = message.substring(2, split).replace("\\\\", "\\").replace("\\/", "/");
+                String to = message.substring(split + 1, message.length() - 1).replace("\\\\", "\\").replace("\\/", "/");
+
+                ArrayList<BotMessage> messages;
+
+                if (bm.getChannel() == null) {
+                    messages = bm.getSender().getLastPrivateMessages();
+                } else {
+                    messages = bm.getChannel().getLastMessages();
+                }
+
+                BotMessage replace = null;
+
+                for (BotMessage candidate : messages) {
+                    if (candidate.getMessage().contains(from)) {
+                        if (replace == null) {
+                            replace = candidate;
+                        } else {
+                            replace = candidate;
                             break;
-                        } else if (message.charAt(i) == '\\') {
-                            // skip the / if there's a \ in front
-                            i++;
                         }
                     }
+                }
 
-                    if (split < message.length() - 1) {
-                        String from = message.substring(2, split);
-                        String to = message.substring(split + 1, message.length() - 1);
+                if (replace != null) {
+                    final BotMessage candidate = replace;
 
-                        ArrayList<BotMessage> messages;
-
-                        if (bm.getChannel() == null) {
-                            messages = bm.getSender().getLastMessages();
-                        } else {
-                            messages = bm.getChannel().getLastMessages();
+                    new Thread(() -> {
+                        try {
+                            Thread.sleep(500);
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
                         }
 
-                        BotMessage replace = null;
+                        ArrayList<BotMessage> newMessages;
 
-                        for (BotMessage candidate : messages) {
-                            if (candidate.getMessage().contains(from)) {
-                                if (replace == null) {
-                                    replace = candidate;
-                                } else {
-                                    replace = candidate;
-                                    break;
-                                }
+                        if (bm.getChannel() == null) {
+                            newMessages = bm.getSender().getLastMessages();
+                        } else {
+                            newMessages = bm.getChannel().getLastMessages();
+                        }
+
+                        boolean send = true;
+
+                        for (BotMessage newMessage : newMessages) {
+                            if (newMessage.getTime() < candidate.getTime()) {
+                                break;
+                            }
+
+                            if (FormattingUtil.containsIgnoreFormatting(newMessage.getMessage(), candidate.getMessage().replace(from, to))) {
+                                send = false;
+                                break;
                             }
                         }
 
-                        if (replace != null) {
-                            final BotMessage candidate = replace;
-
-                            new Thread(() -> {
-                                try {
-                                    Thread.sleep(500);
-                                } catch (InterruptedException e) {
-                                    e.printStackTrace();
-                                }
-
-                                ArrayList<BotMessage> newMessages;
-
-                                if (bm.getChannel() == null) {
-                                    newMessages = bm.getSender().getLastMessages();
-                                } else {
-                                    newMessages = bm.getChannel().getLastMessages();
-                                }
-
-                                for (BotMessage newMessage : newMessages) {
-                                    if (newMessage.getTime() < candidate.getTime()) {
-                                        bot.reply(bm, candidate.getIrcForm().replace(from, to));
-                                        break;
-                                    }
-
-                                    if (Colors.removeFormattingAndColors(newMessage.getMessage()).equals(candidate.getMessage().replace(from, to))) {
-                                        break;
-                                    }
-                                }
-                            }).start();
+                        if (send) {
+                            bot.reply(bm, candidate.getIrcForm().replace(from, to));
                         }
-                    }
+                    }).start();
                 }
             }
         }

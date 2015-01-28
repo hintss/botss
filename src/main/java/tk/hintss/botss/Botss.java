@@ -84,7 +84,7 @@ public class Botss extends PircBot {
 
         BotChannel botChannel = null;
 
-        if (target != null) {
+        if (target.startsWith("#")) {
             botChannel = channels.get(target);
         }
 
@@ -98,6 +98,9 @@ public class Botss extends PircBot {
 
         BotMessage bm = new BotMessage(message, botUser, botChannel);
         botUser.said(bm);
+        if (target.equals(botUser.getNick())) {
+            botUser.pmed(bm);
+        }
 
         if (botChannel != null) {
             botChannel.said(bm);

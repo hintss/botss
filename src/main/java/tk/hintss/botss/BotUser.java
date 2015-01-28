@@ -15,9 +15,10 @@ public class BotUser {
 
     private final Set<BotChannel> channels = new HashSet<>();
 
-    private final MessageQueue lastMessages = new MessageQueue(20);
+    private final MessageQueue lastMessages = new MessageQueue();
+    private final MessageQueue lastPrivateMessages = new MessageQueue();
 
-    public BotUser(String nick) {
+    protected BotUser(String nick) {
         this.nick = nick;
     }
 
@@ -32,7 +33,7 @@ public class BotUser {
         return nick;
     }
 
-    public void setNick(String nick) {
+    protected void setNick(String nick) {
         this.nick = nick;
     }
 
@@ -40,7 +41,7 @@ public class BotUser {
         return user;
     }
 
-    public void setUser(String user) {
+    protected void setUser(String user) {
         this.user = user;
     }
 
@@ -48,7 +49,7 @@ public class BotUser {
         return host;
     }
 
-    public void setHost(String host) {
+    protected void setHost(String host) {
         this.host = host;
     }
 
@@ -60,11 +61,19 @@ public class BotUser {
         return channels;
     }
 
-    public void said(BotMessage message) {
+    protected void said(BotMessage message) {
         lastMessages.addMessage(message);
+    }
+
+    protected void pmed(BotMessage message) {
+        lastPrivateMessages.addMessage(message);
     }
 
     public ArrayList<BotMessage> getLastMessages() {
         return lastMessages.getMessages();
+    }
+
+    public ArrayList<BotMessage> getLastPrivateMessages() {
+        return lastPrivateMessages.getMessages();
     }
 }

@@ -6,12 +6,8 @@ import java.util.ArrayList;
  * Created by Henry on 1/25/2015.
  */
 public class MessageQueue {
-    int size = 0;
+    int size = 50;
     ArrayList<BotMessage> list = new ArrayList<>();
-
-    public MessageQueue(int size) {
-        this.size = size;
-    }
 
     public void addMessage(BotMessage message) {
         list.add(0, message);
