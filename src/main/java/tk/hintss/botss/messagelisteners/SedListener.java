@@ -70,24 +70,21 @@ public class SedListener extends MessageListener {
                             e.printStackTrace();
                         }
 
-                        ArrayList<BotMessage> newMessages;
-
-                        if (bm.getChannel() == null) {
-                            newMessages = bm.getSender().getLastPrivateMessages();
-                        } else {
-                            newMessages = bm.getChannel().getLastMessages();
-                        }
-
                         boolean send = true;
 
-                        for (BotMessage newMessage : newMessages) {
-                            if (newMessage.getTime() < candidate.getTime()) {
-                                break;
-                            }
+                        if (bm.getChannel() != null) {
+                            ArrayList<BotMessage> newMessages = bm.getChannel().getLastMessages();
 
-                            if (FormattingUtil.containsIgnoreFormatting(newMessage.getMessage(), candidate.getMessage().replace(from, to))) {
-                                send = false;
-                                break;
+                            for (BotMessage newMessage : newMessages) {
+                                // exit this loop if the message is older than the s/// message
+                                if (newMessage.getTime() < bm.getTime()) {
+                                    break;
+                                }
+
+                                if (FormattingUtil.containsIgnoreFormatting(newMessage.getMessage(), candidate.getMessage().replace(from, to))) {
+                                    send = false;
+                                    break;
+                                }
                             }
                         }
 
@@ -99,6 +96,7 @@ public class SedListener extends MessageListener {
                             } else {
                                 result += candidate.getMessage().replace(from, Colors.BOLD + to + Colors.BOLD);
                             }
+
                             bot.reply(bm, result);
                         }
                     }).start();
