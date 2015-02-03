@@ -60,7 +60,7 @@ public class SedListener extends MessageListener {
                     }
                 }
 
-                if (replace != null) {
+                if (replace != bm) {
                     final BotMessage candidate = replace;
 
                     new Thread(() -> {
@@ -73,7 +73,7 @@ public class SedListener extends MessageListener {
                         ArrayList<BotMessage> newMessages;
 
                         if (bm.getChannel() == null) {
-                            newMessages = bm.getSender().getLastMessages();
+                            newMessages = bm.getSender().getLastPrivateMessages();
                         } else {
                             newMessages = bm.getChannel().getLastMessages();
                         }
