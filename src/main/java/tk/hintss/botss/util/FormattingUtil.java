@@ -7,14 +7,14 @@ import org.jibble.pircbot.Colors;
  */
 public class FormattingUtil {
     public static boolean hasFormatting(String message) {
-        return message.equals(Colors.removeFormattingAndColors(message));
+        return message.equals(Colors.removeFormatting(message));
     }
 
     public static boolean equalsIgnoreFormatting(String message1, String message2) {
-        return Colors.removeFormattingAndColors(message1).equals(Colors.removeFormattingAndColors(message2));
+        return Colors.removeFormatting(message1).equals(Colors.removeFormatting(message2));
     }
 
     public static boolean containsIgnoreFormatting(String message, String contains) {
-        return Colors.removeFormattingAndColors(message).contains(Colors.removeFormattingAndColors(contains));
+        return Colors.removeFormatting(message).contains(Colors.removeFormatting(contains));
     }
 }
