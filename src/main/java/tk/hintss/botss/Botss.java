@@ -178,6 +178,13 @@ public class Botss extends PircBot {
     protected void onDisconnect() {
         Set<String> channelsList = channels.keySet();
 
+        StringBuilder sb = new StringBuilder();
+
+        for (String channel : channelsList) {
+            sb.append(channel);
+            sb.append(",");
+        }
+
         channels.clear();
         users.clear();
 
@@ -190,14 +197,6 @@ public class Botss extends PircBot {
             } catch (IOException | IrcException e) {
                 e.printStackTrace();
             }
-        }
-
-
-        StringBuilder sb = new StringBuilder();
-
-        for (String channel : channelsList) {
-            sb.append(channel);
-            sb.append(",");
         }
 
         joinChannel(sb.toString());
