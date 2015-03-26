@@ -1,8 +1,7 @@
 package tk.hintss.botss.commands;
 
 import org.jibble.pircbot.Colors;
-import tk.hintss.botss.BotChannel;
-import tk.hintss.botss.BotUser;
+import tk.hintss.botss.BotMessage;
 import tk.hintss.botss.Botss;
 import tk.hintss.botss.Command;
 
@@ -11,9 +10,9 @@ import tk.hintss.botss.Command;
  */
 public class PingCommand extends Command {
     @Override
-    public void execute(Botss bot, String target, BotUser user, BotChannel channel, String... args) {
+    public void execute(Botss bot, BotMessage bm, String... args) {
         if (args.length == 0) {
-            bot.sendFormattedMessage(user, target, "PONG!");
+            bot.reply(bm, "PONG!");
         } else {
             StringBuilder sb = new StringBuilder("PONG ");
 
@@ -22,7 +21,7 @@ public class PingCommand extends Command {
                 sb.append(" ");
             }
 
-            bot.sendFormattedMessage(user, target, sb.toString());
+            bot.reply(bm, sb.toString());
         }
     }
 

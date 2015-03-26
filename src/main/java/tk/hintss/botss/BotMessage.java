@@ -37,4 +37,12 @@ public class BotMessage {
     public String getIrcForm() {
         return "<" + getSender().getNick() + "> " + getMessage();
     }
+
+    public Messageable getTarget() {
+        if (channel == null) {
+            return sender;
+        } else {
+            return channel;
+        }
+    }
 }

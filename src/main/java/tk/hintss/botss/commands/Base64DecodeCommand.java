@@ -1,8 +1,7 @@
 package tk.hintss.botss.commands;
 
 import org.jibble.pircbot.Colors;
-import tk.hintss.botss.BotChannel;
-import tk.hintss.botss.BotUser;
+import tk.hintss.botss.BotMessage;
 import tk.hintss.botss.Botss;
 import tk.hintss.botss.Command;
 
@@ -13,15 +12,15 @@ import java.util.Base64;
  */
 public class Base64DecodeCommand extends Command {
     @Override
-    public void execute(Botss bot, String target, BotUser user, BotChannel channel, String... args) {
+    public void execute(Botss bot, BotMessage bm, String... args) {
         if (args.length == 0) {
-            HelpCommand.sendHelp(bot, user, target, getCommand());
+            HelpCommand.sendHelp(bot, bm.getSender(), bm.getTarget(), getCommand());
             return;
         }
 
         String decoded = new String(Base64.getDecoder().decode(args[0].getBytes()));
 
-        bot.sendFormattedMessage(user, target, Colors.BOLD + "Decodes to: " + Colors.BOLD + decoded);
+        bot.reply(bm, Colors.BOLD + "Decodes to: " + Colors.BOLD + decoded);
     }
 
     @Override

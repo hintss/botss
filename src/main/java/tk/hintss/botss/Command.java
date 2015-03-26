@@ -4,7 +4,7 @@ package tk.hintss.botss;
  * Created by Henry on 12/30/2014.
  */
 public class Command {
-    public void execute(Botss bot, String target, BotUser user, BotChannel channel, String... args) {
+    public void execute(Botss bot, BotMessage bm, String... args) {
 
     }
 

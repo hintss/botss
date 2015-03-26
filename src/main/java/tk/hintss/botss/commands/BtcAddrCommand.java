@@ -4,8 +4,7 @@ import info.blockchain.api.APIException;
 import info.blockchain.api.blockexplorer.Address;
 import info.blockchain.api.blockexplorer.BlockExplorer;
 import org.jibble.pircbot.Colors;
-import tk.hintss.botss.BotChannel;
-import tk.hintss.botss.BotUser;
+import tk.hintss.botss.BotMessage;
 import tk.hintss.botss.Botss;
 import tk.hintss.botss.Command;
 
@@ -17,9 +16,9 @@ import java.text.DecimalFormat;
  */
 public class BtcAddrCommand extends Command {
     @Override
-    public void execute(Botss bot, String target, BotUser user, BotChannel channel, String... args) {
+    public void execute(Botss bot, BotMessage bm, String... args) {
         if (args.length == 0) {
-            HelpCommand.sendHelp(bot, user, target, getCommand());
+            HelpCommand.sendHelp(bot, bm.getSender(), bm.getTarget(), getCommand());
             return;
         }
 
@@ -30,15 +29,15 @@ public class BtcAddrCommand extends Command {
                 BlockExplorer blockExplorer = new BlockExplorer();
 
                 Address address = blockExplorer.getAddress(addr);
-                bot.sendFormattedMessage(user, target, "BTC: " + Colors.BOLD + address.getAddress() + Colors.BOLD
+                bot.reply(bm, "BTC: " + Colors.BOLD + address.getAddress() + Colors.BOLD
                         + " Final Balance: " + Colors.BOLD + new DecimalFormat("#").format(address.getFinalBalance() / 100000000D) + Colors.BOLD
                         + " Total Received: " + Colors.BOLD + new DecimalFormat("#").format(address.getTotalReceived() / 100000000D) + Colors.BOLD
                         + " Total Sent: " + Colors.BOLD + address.getTotalSent() + Colors.BOLD
                         + " Blockchain.info: " + Colors.BOLD + "https://blockchain.info/address/" + address.getAddress());
             } catch (APIException e) {
-                bot.sendFormattedMessage(user, target, Colors.RED + "APIException: " + e.getMessage());
+                bot.reply(bm, Colors.RED + "APIException: " + e.getMessage());
             } catch (IOException e) {
-                e.printStackTrace();
+                bot.reply(bm, Colors.RED + "IOException: " + e.getMessage());
             }
         }).start();
     }

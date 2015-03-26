@@ -1,8 +1,7 @@
 package tk.hintss.botss.commands;
 
 import org.jibble.pircbot.Colors;
-import tk.hintss.botss.BotChannel;
-import tk.hintss.botss.BotUser;
+import tk.hintss.botss.BotMessage;
 import tk.hintss.botss.Botss;
 import tk.hintss.botss.Command;
 import tk.hintss.botss.util.NumberUtil;
@@ -12,9 +11,9 @@ import tk.hintss.botss.util.NumberUtil;
  */
 public class LuhnSumCommand extends Command {
     @Override
-    public void execute(Botss bot, String target, BotUser user, BotChannel channel, String... args) {
+    public void execute(Botss bot, BotMessage bm, String... args) {
         if (args.length == 0) {
-            HelpCommand.sendHelp(bot, user, target, getCommand());
+            HelpCommand.sendHelp(bot, bm.getSender(), bm.getTarget(), getCommand());
             return;
         }
 
@@ -23,11 +22,11 @@ public class LuhnSumCommand extends Command {
         try {
             input = Long.parseLong(args[0]);
         } catch (NumberFormatException ex) {
-            HelpCommand.sendHelp(bot, user, target, getCommand());
+            HelpCommand.sendHelp(bot, bm.getSender(), bm.getTarget(), getCommand());
             return;
         }
 
-        bot.sendFormattedMessage(user, target, "Luhn sum for " + args[0] + " = " + NumberUtil.luhnSum(input));
+        bot.reply(bm, "Luhn sum for " + args[0] + " = " + NumberUtil.luhnSum(input));
     }
 
     @Override

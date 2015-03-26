@@ -6,8 +6,7 @@ import com.google.zxing.qrcode.encoder.ByteMatrix;
 import com.google.zxing.qrcode.encoder.Encoder;
 import com.google.zxing.qrcode.encoder.QRCode;
 import org.jibble.pircbot.Colors;
-import tk.hintss.botss.BotChannel;
-import tk.hintss.botss.BotUser;
+import tk.hintss.botss.BotMessage;
 import tk.hintss.botss.Botss;
 import tk.hintss.botss.Command;
 
@@ -16,9 +15,9 @@ import tk.hintss.botss.Command;
  */
 public class QrCommand extends Command {
     @Override
-    public void execute(Botss bot, String target, BotUser user, BotChannel channel, String... args) {
+    public void execute(Botss bot, BotMessage bm, String... args) {
         if (args.length == 0) {
-            HelpCommand.sendHelp(bot, user, target, getCommand());
+            HelpCommand.sendHelp(bot, bm.getSender(), bm.getTarget(), getCommand());
             return;
         }
 
@@ -42,10 +41,10 @@ public class QrCommand extends Command {
                     line.append(charAt(matrix, j, i));
                 }
 
-                bot.sendMessage(user.getNick(), line.toString());
+                bot.sendFormattedMessage(bm.getSender(), line.toString());
             }
         } catch (WriterException e) {
-            bot.sendFormattedMessage(user, target, e.getMessage());
+            bot.reply(bm, "WriterException: " + e.getMessage());
         }
     }
 

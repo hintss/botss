@@ -118,7 +118,7 @@ public class Botss extends PircBot {
 
                 System.arraycopy(splitWithCommand, 1, args, 0, args.length);
 
-                commands.get(splitWithCommand[0].toLowerCase()).execute(this, target, botUser, botChannel, args);
+                commands.get(splitWithCommand[0].toLowerCase()).execute(this, bm, args);
             }
         }
 
@@ -294,14 +294,6 @@ public class Botss extends PircBot {
     }
 
     public void reply(BotMessage bm, String message) {
-        Messageable target;
-
-        if (bm.getChannel() == null) {
-            target = bm.getSender();
-        } else {
-            target = bm.getChannel();
-        }
-
-        sendFormattedMessage(bm.getSender(), target, message);
+        sendFormattedMessage(bm.getSender(), bm.getTarget(), message);
     }
 }

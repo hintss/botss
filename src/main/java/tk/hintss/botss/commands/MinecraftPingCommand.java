@@ -4,8 +4,7 @@ import ch.jamiete.mcping.MinecraftPing;
 import ch.jamiete.mcping.MinecraftPingOptions;
 import ch.jamiete.mcping.MinecraftPingReply;
 import org.jibble.pircbot.Colors;
-import tk.hintss.botss.BotChannel;
-import tk.hintss.botss.BotUser;
+import tk.hintss.botss.BotMessage;
 import tk.hintss.botss.Botss;
 import tk.hintss.botss.Command;
 
@@ -16,9 +15,9 @@ import java.io.IOException;
  */
 public class MinecraftPingCommand extends Command {
     @Override
-    public void execute(Botss bot, String target, BotUser user, BotChannel channel, String... args) {
+    public void execute(Botss bot, BotMessage bm, String... args) {
         if (args.length == 0) {
-            HelpCommand.sendHelp(bot, user, target, getCommand());
+            HelpCommand.sendHelp(bot, bm.getSender(), bm.getTarget(), getCommand());
             return;
         }
 
@@ -30,12 +29,12 @@ public class MinecraftPingCommand extends Command {
                 port = Integer.parseInt(args[1]);
 
                 if (port < 1 || port > 65535) {
-                    bot.sendFormattedMessage(user, target, Colors.RED + "Invalid port number '" + port + "'!");
+                    bot.reply(bm, Colors.RED + "Invalid port number '" + port + "'!");
 
                     return;
                 }
             } catch (NumberFormatException ex) {
-                bot.sendFormattedMessage(user, target, Colors.RED + "Invalid port number '" + args[1] + "'!");
+                bot.reply(bm, Colors.RED + "Invalid port number '" + args[1] + "'!");
 
                 return;
             }
@@ -46,9 +45,9 @@ public class MinecraftPingCommand extends Command {
         new Thread(() -> {
             try {
                 MinecraftPingReply data = new MinecraftPing().getPing(new MinecraftPingOptions().setHostname(ip).setPort(port));
-                bot.sendFormattedMessage(user, target, "'" + ip + "' - " + data.getPlayers().getOnline() + "/" + data.getPlayers().getMax() + " - " + data.getVersion().getName() + " - " + data.getDescription());
+                bot.reply(bm, "'" + ip + "' - " + data.getPlayers().getOnline() + "/" + data.getPlayers().getMax() + " - " + data.getVersion().getName() + " - " + data.getDescription());
             } catch (IOException e) {
-                bot.sendFormattedMessage(user, target, Colors.RED + "Couldn't connect to '" + Colors.BOLD + args[0] + Colors.BOLD + "' on " + Colors.BOLD + port);
+                bot.reply(bm, Colors.RED + "Couldn't connect to '" + Colors.BOLD + args[0] + Colors.BOLD + "' on " + Colors.BOLD + port);
             }
         }).start();
     }
