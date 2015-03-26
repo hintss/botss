@@ -12,6 +12,7 @@ import java.util.ArrayList;
 public class SedListener extends MessageListener {
     @Override
     public void onMessage(Botss bot, String target, BotMessage bm) {
+        /*
         String message = bm.getMessage();
         // s/x// (shortest possible) == 4 chars
         if (message.length() > 4) {
@@ -61,6 +62,6 @@ public class SedListener extends MessageListener {
                     }
                 }
             }
-        }
+        }*/
     }
 }

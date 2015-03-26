@@ -33,6 +33,6 @@ public class PingCommand extends Command {
 
     @Override
     public String getHelpText() {
-        return "ping" + Colors.BOLD + " - PONG!";
+        return "ping [token]" + Colors.BOLD + " - PONG!";
     }
 }
