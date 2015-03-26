@@ -25,8 +25,13 @@ public class MeTooListener implements MessageListener {
                 }
             }
 
-            if (count >= 3) {
-                if (bm.equals("^")) {
+            if (count >= 2 + bot.rand.nextInt(3)) {
+                if (bm.getMessage().equals("^")) {
+                    bot.sendFormattedMessage(channel, "^");
+                } else if (bm.getMessage().equalsIgnoreCase("lol")) {
+                    bot.sendFormattedMessage(channel, "lol");
+                } else if (bm.getMessage().equalsIgnoreCase("wat")) {
+                    bot.sendFormattedMessage(channel, "wat");
                 }
             }
         }

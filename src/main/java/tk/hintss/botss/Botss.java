@@ -9,6 +9,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Random;
 import java.util.Set;
 
 /**
@@ -24,6 +25,8 @@ public class Botss extends PircBot {
 
     public HashMap<String, BotChannel> channels = new HashMap<>();
     public HashMap<String, BotUser> users = new HashMap<>();
+
+    public Random rand = new Random();
 
     public Botss() {
         this.setName("botss");
