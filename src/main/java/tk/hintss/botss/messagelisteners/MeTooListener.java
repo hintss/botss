@@ -18,6 +18,10 @@ public class MeTooListener implements MessageListener {
             int count = 0;
 
             for (BotMessage msg : channel.getLastMessages()) {
+                if (msg.getSender() == bot.me) {
+                    return;
+                }
+
                 if (msg.getMessage().equalsIgnoreCase(bm.getMessage())) {
                     count++;
                 } else {

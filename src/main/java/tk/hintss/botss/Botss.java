@@ -18,6 +18,8 @@ import java.util.Set;
 public class Botss extends PircBot {
     public static final String commandPrefix = "]";
 
+    public BotUser me;
+
     public HashMap<String, Command> commands = new HashMap<>();
     public HashMap<String, String> aliases = new HashMap<>();
 
@@ -137,6 +139,8 @@ public class Botss extends PircBot {
         }
 
         addUser(sender, login, hostname, channel);
+
+        me = users.get(getNick());
     }
 
     @Override
@@ -194,9 +198,10 @@ public class Botss extends PircBot {
 
         while (!connected) {
             try {
+                Thread.sleep(500);
                 reconnect();
                 connected = true;
-            } catch (IOException | IrcException e) {
+            } catch (InterruptedException | IOException | IrcException e) {
                 e.printStackTrace();
             }
         }
