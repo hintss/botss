@@ -7,7 +7,7 @@ import java.util.Set;
 /**
  * Created by Henry on 12/30/2014.
  */
-public class BotChannel {
+public class BotChannel implements Messageable {
     private final String name;
 
     private String topic;
@@ -61,5 +61,10 @@ public class BotChannel {
 
     public ArrayList<BotMessage> getLastMessages() {
         return lastMessages.getMessages();
+    }
+
+    @Override
+    public String getTargetName() {
+        return name;
     }
 }

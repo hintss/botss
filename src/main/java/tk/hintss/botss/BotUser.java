@@ -7,7 +7,7 @@ import java.util.Set;
 /**
  * Created by Henry on 12/30/2014.
  */
-public class BotUser {
+public class BotUser implements Messageable {
     private String nick;
 
     private String user;
@@ -79,5 +79,10 @@ public class BotUser {
 
     public ArrayList<BotMessage> getLastPrivateMessages() {
         return lastPrivateMessages.getMessages();
+    }
+
+    @Override
+    public String getTargetName() {
+        return nick;
     }
 }

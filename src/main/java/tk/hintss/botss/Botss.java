@@ -31,7 +31,6 @@ public class Botss extends PircBot {
         this.setFinger("hintss");
         this.setLogin("hintss");
         this.setVersion("botss by hintss, using PircBot 1.5.0.");
-        this.setMessageDelay(500);
 
         Reflections reflections = new Reflections("tk.hintss.botss.commands");
 
@@ -99,11 +98,11 @@ public class Botss extends PircBot {
 
         BotMessage bm = new BotMessage(message, botUser, botChannel);
         botUser.said(bm);
-        if (target.equals(botUser.getNick())) {
-            botUser.pmed(bm);
-        }
 
-        if (botChannel != null) {
+
+        if (botChannel == null) {
+            botUser.pmed(bm);
+        } else {
             botChannel.said(bm);
         }
 
@@ -121,10 +120,10 @@ public class Botss extends PircBot {
 
                 commands.get(splitWithCommand[0].toLowerCase()).execute(this, target, botUser, botChannel, args);
             }
-        } else {
-            for (MessageListener listener : listeners) {
-                listener.onMessage(this, bm);
-            }
+        }
+
+        for (MessageListener listener : listeners) {
+            listener.onMessage(this, bm);
         }
     }
 
@@ -285,18 +284,22 @@ public class Botss extends PircBot {
         users.remove(nick);
     }
 
-    public void sendFormattedMessage(BotUser user, String target, String message) {
+    public void sendFormattedMessage(BotUser user, Messageable target, String message) {
+        sendFormattedMessage(target, message);
+    }
+
+    public void sendFormattedMessage(Messageable target, String message) {
         message = message.replace("\7", "␇"); // replace bels with the bel representative
-        sendMessage(target, message);
+        sendMessage(target.getTargetName(), message);
     }
 
     public void reply(BotMessage bm, String message) {
-        String target;
+        Messageable target;
 
         if (bm.getChannel() == null) {
-            target = bm.getSender().getNick();
+            target = bm.getSender();
         } else {
-            target = bm.getChannel().getName();
+            target = bm.getChannel();
         }
 
         sendFormattedMessage(bm.getSender(), target, message);
