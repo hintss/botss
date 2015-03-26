@@ -17,7 +17,7 @@ import java.net.UnknownHostException;
 /**
  * Created by Henry on 12/30/2014.
  */
-public class MumbleCommand extends Command {
+public class MumblePingCommand extends Command {
     @Override
     public void execute(Botss bot, String target, BotUser user, BotChannel channel, String... args) {
         if (args.length == 0) {
@@ -82,11 +82,16 @@ public class MumbleCommand extends Command {
 
     @Override
     public String getCommand() {
-        return "mumble";
+        return "mumbleping";
+    }
+
+    @Override
+    public String[] getAliases() {
+        return new String[] {"mumble"};
     }
 
     @Override
     public String getHelpText() {
-        return "mumble <server> [port]" + Colors.BOLD + " - pings a mumble server";
+        return "mumbleping <server> [port]" + Colors.BOLD + " - pings a mumble server";
     }
 }

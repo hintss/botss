@@ -8,6 +8,7 @@ import org.reflections.Reflections;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Set;
 
 /**
@@ -84,7 +85,7 @@ public class Botss extends PircBot {
 
         BotChannel botChannel = null;
 
-        if (target != null) {
+        if (target.startsWith("#")) {
             botChannel = channels.get(target);
         }
 
@@ -98,6 +99,9 @@ public class Botss extends PircBot {
 
         BotMessage bm = new BotMessage(message, botUser, botChannel);
         botUser.said(bm);
+        if (target.equals(botUser.getNick())) {
+            botUser.pmed(bm);
+        }
 
         if (botChannel != null) {
             botChannel.said(bm);
@@ -119,7 +123,7 @@ public class Botss extends PircBot {
             }
         } else {
             for (MessageListener listener : listeners) {
-                listener.onMessage(this, target, bm);
+                listener.onMessage(this, bm);
             }
         }
     }
@@ -174,6 +178,13 @@ public class Botss extends PircBot {
     protected void onDisconnect() {
         Set<String> channelsList = channels.keySet();
 
+        StringBuilder sb = new StringBuilder();
+
+        for (String channel : channelsList) {
+            sb.append(channel);
+            sb.append(",");
+        }
+
         channels.clear();
         users.clear();
 
@@ -186,14 +197,6 @@ public class Botss extends PircBot {
             } catch (IOException | IrcException e) {
                 e.printStackTrace();
             }
-        }
-
-
-        StringBuilder sb = new StringBuilder();
-
-        for (String channel : channelsList) {
-            sb.append(channel);
-            sb.append(",");
         }
 
         joinChannel(sb.toString());
@@ -213,8 +216,12 @@ public class Botss extends PircBot {
             users.put(nick, botUser);
         }
 
-        botChannel.getUsers().add(botUser);
-        botUser.getChannels().add(botChannel);
+        HashSet<BotUser> channelUsers = botChannel.getUsers();
+        channelUsers.add(botUser);
+        botChannel.setUsers(channelUsers);
+        HashSet<BotChannel> userChannels = botUser.getChannels();
+        userChannels.add(botChannel);
+        botUser.setChannels(userChannels);
     }
 
     /**
@@ -233,8 +240,12 @@ public class Botss extends PircBot {
             users.put(nick, botUser);
         }
 
-        botChannel.getUsers().add(botUser);
-        botUser.getChannels().add(botChannel);
+        HashSet<BotUser> channelUsers = botChannel.getUsers();
+        channelUsers.add(botUser);
+        botChannel.setUsers(channelUsers);
+        HashSet<BotChannel> userChannels = botUser.getChannels();
+        userChannels.add(botChannel);
+        botUser.setChannels(userChannels);
     }
 
     /**
@@ -246,8 +257,12 @@ public class Botss extends PircBot {
         BotUser botUser = users.get(nick);
         BotChannel botChannel = channels.get(channel);
 
-        botUser.getChannels().remove(botChannel);
-        botChannel.getUsers().remove(botUser);
+        HashSet<BotUser> channelUsers = botChannel.getUsers();
+        channelUsers.remove(botUser);
+        botChannel.setUsers(channelUsers);
+        HashSet<BotChannel> userChannels = botUser.getChannels();
+        userChannels.remove(botChannel);
+        botUser.setChannels(userChannels);
 
         if (botUser.getChannels().size() == 0) {
             removeUser(nick);
@@ -262,7 +277,9 @@ public class Botss extends PircBot {
         BotUser user = users.get(nick);
 
         for (BotChannel channel : user.getChannels()) {
-            channel.getUsers().remove(user);
+            HashSet<BotUser> channelUsers = channel.getUsers();
+            channelUsers.remove(user);
+            channel.setUsers(channelUsers);
         }
 
         users.remove(nick);
@@ -271,5 +288,17 @@ public class Botss extends PircBot {
     public void sendFormattedMessage(BotUser user, String target, String message) {
         message = message.replace("\7", "␇"); // replace bels with the bel representative
         sendMessage(target, message);
+    }
+
+    public void reply(BotMessage bm, String message) {
+        String target;
+
+        if (bm.getChannel() == null) {
+            target = bm.getSender().getNick();
+        } else {
+            target = bm.getChannel().getName();
+        }
+
+        sendFormattedMessage(bm.getSender(), target, message);
     }
 }

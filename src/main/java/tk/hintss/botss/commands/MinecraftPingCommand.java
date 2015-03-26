@@ -55,7 +55,7 @@ public class MinecraftPingCommand extends Command {
 
     @Override
     public String getCommand() {
-        return "minecraft";
+        return "minecraftping";
     }
 
     @Override
