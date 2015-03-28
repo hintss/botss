@@ -55,7 +55,7 @@ public class BotChannel implements Messageable {
         this.users = newUsers;
     }
 
-    protected void said(BotMessage message) {
+    public void sent(BotMessage message) {
         lastMessages.addMessage(message);
     }
 

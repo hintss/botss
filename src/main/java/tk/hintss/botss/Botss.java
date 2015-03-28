@@ -106,9 +106,9 @@ public class Botss extends PircBot {
 
 
         if (botChannel == null) {
-            botUser.pmed(bm);
+            botUser.sent(bm);
         } else {
-            botChannel.said(bm);
+            botChannel.sent(bm);
         }
 
         if (message.startsWith(commandPrefix)) {
@@ -299,9 +299,17 @@ public class Botss extends PircBot {
     public void sendFormattedMessage(Messageable target, String message) {
         message = message.replace("\7", "␇"); // replace bels with the bel representative
         sendMessage(target.getTargetName(), message);
+
+        BotMessage bm = new BotMessage(message, me, target);
+        me.said(bm);
+        if (target instanceof BotChannel) {
+            ((BotChannel) target).sent(bm);
+        } else if (target instanceof BotUser) {
+            ((BotUser) target).sent(bm);
+        }
     }
 
     public void reply(BotMessage bm, String message) {
-        sendFormattedMessage(bm.getSender(), bm.getTarget(), message);
+        sendFormattedMessage(bm.getSender(), bm.getReplyTarget(), message);
     }
 }

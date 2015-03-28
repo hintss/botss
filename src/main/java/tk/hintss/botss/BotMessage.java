@@ -8,14 +8,14 @@ public class BotMessage {
 
     private final String message;
     private final BotUser sender;
-    private final BotChannel channel;
+    private final Messageable replyTarget; // either the sender (for a pm) or the channel (for a channel message)
 
-    public BotMessage(String message, BotUser user, BotChannel target) {
+    public BotMessage(String message, BotUser user, Messageable replyTarget) {
         time = System.currentTimeMillis();
 
         this.message = message;
         this.sender = user;
-        this.channel = target;
+        this.replyTarget = replyTarget;
     }
 
     public long getTime() {
@@ -30,19 +30,11 @@ public class BotMessage {
         return sender;
     }
 
-    public BotChannel getChannel() {
-        return channel;
+    public Messageable getReplyTarget() {
+        return replyTarget;
     }
 
     public String getIrcForm() {
         return "<" + getSender().getNick() + "> " + getMessage();
-    }
-
-    public Messageable getTarget() {
-        if (channel == null) {
-            return sender;
-        } else {
-            return channel;
-        }
     }
 }

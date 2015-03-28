@@ -13,7 +13,7 @@ public class LuhnSumCommand extends Command {
     @Override
     public void execute(Botss bot, BotMessage bm, String... args) {
         if (args.length == 0) {
-            HelpCommand.sendHelp(bot, bm.getSender(), bm.getTarget(), getCommand());
+            HelpCommand.sendHelp(bot, bm.getSender(), bm.getReplyTarget(), getCommand());
             return;
         }
 
@@ -22,7 +22,7 @@ public class LuhnSumCommand extends Command {
         try {
             input = Long.parseLong(args[0]);
         } catch (NumberFormatException ex) {
-            HelpCommand.sendHelp(bot, bm.getSender(), bm.getTarget(), getCommand());
+            HelpCommand.sendHelp(bot, bm.getSender(), bm.getReplyTarget(), getCommand());
             return;
         }
 

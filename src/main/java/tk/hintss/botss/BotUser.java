@@ -1,7 +1,7 @@
 package tk.hintss.botss;
 
-import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -15,7 +15,7 @@ public class BotUser implements Messageable {
 
     private Set<BotChannel> channels = new HashSet<>();
 
-    private final MessageQueue lastMessages = new MessageQueue();
+    private final MessageQueue lastSentMessages = new MessageQueue();
     private final MessageQueue lastPrivateMessages = new MessageQueue();
 
     protected BotUser(String nick) {
@@ -66,18 +66,18 @@ public class BotUser implements Messageable {
     }
 
     protected void said(BotMessage message) {
-        lastMessages.addMessage(message);
+        lastSentMessages.addMessage(message);
     }
 
-    protected void pmed(BotMessage message) {
+    public void sent(BotMessage message) {
         lastPrivateMessages.addMessage(message);
     }
 
-    public ArrayList<BotMessage> getLastMessages() {
-        return lastMessages.getMessages();
+    public List<BotMessage> getLastSentMessages() {
+        return lastSentMessages.getMessages();
     }
 
-    public ArrayList<BotMessage> getLastPrivateMessages() {
+    public List<BotMessage> getLastMessages() {
         return lastPrivateMessages.getMessages();
     }
 
