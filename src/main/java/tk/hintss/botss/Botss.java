@@ -87,28 +87,30 @@ public class Botss extends PircBot {
     public void processMessage(String nick, String user, String host, String target, String message) {
         BotUser botUser = users.get(nick);
 
-        BotChannel botChannel = null;
-
-        if (target.startsWith("#")) {
-            botChannel = channels.get(target);
-        }
-
         if (botUser == null) {
             botUser = new BotUser(nick, user, host);
+        }
+
+        Messageable replyTarget = null;
+
+        if (target.startsWith("#")) {
+            replyTarget = channels.get(target);
+        } else {
+            replyTarget = botUser;
         }
 
         // if we picked up this user in the initial channel burst, we won't have their hostmask
         botUser.setUser(user);
         botUser.setHost(host);
 
-        BotMessage bm = new BotMessage(message, botUser, botChannel);
+        BotMessage bm = new BotMessage(message, botUser, replyTarget);
         botUser.said(bm);
 
 
-        if (botChannel == null) {
+        if (replyTarget == null) {
             botUser.sent(bm);
         } else {
-            botChannel.sent(bm);
+            replyTarget.sent(bm);
         }
 
         if (message.startsWith(commandPrefix)) {
