@@ -23,7 +23,8 @@ public class Botss extends PircBot {
     public HashMap<String, Command> commands = new HashMap<>();
     public HashMap<String, String> aliases = new HashMap<>();
 
-    public ArrayList<MessageListener> listeners = new ArrayList<>();
+    public ArrayList<MessageListener> messageListeners = new ArrayList<>();
+    public ArrayList<TopicListener> topicListeners = new ArrayList<>();
 
     public HashMap<String, BotChannel> channels = new HashMap<>();
     public HashMap<String, BotUser> users = new HashMap<>();
@@ -65,7 +66,23 @@ public class Botss extends PircBot {
             try {
                 MessageListener listener = (MessageListener) messageListener.newInstance();
 
-                listeners.add(listener);
+                this.messageListeners.add(listener);
+
+                System.out.println("loaded " + messageListener.getSimpleName());
+            } catch (InstantiationException | IllegalAccessException e) {
+                e.printStackTrace();
+            }
+        }
+
+        reflections = new Reflections("tk.hintss.botss.topiclisteners");
+
+        Set<Class<? extends MessageListener>> topicListeners = reflections.getSubTypesOf(MessageListener.class);
+
+        for (Class messageListener : messageListeners) {
+            try {
+                TopicListener listener = (TopicListener) messageListener.newInstance();
+
+                this.topicListeners.add(listener);
 
                 System.out.println("loaded " + messageListener.getSimpleName());
             } catch (InstantiationException | IllegalAccessException e) {
@@ -129,7 +146,7 @@ public class Botss extends PircBot {
             }
         }
 
-        for (MessageListener listener : listeners) {
+        for (MessageListener listener : messageListeners) {
             listener.onMessage(this, bm);
         }
     }
@@ -179,6 +196,10 @@ public class Botss extends PircBot {
 
     @Override
     protected void onTopic(String channel, String topic, String setBy, long date, boolean changed) {
+        for (TopicListener listener : topicListeners) {
+            listener.onTopic(this, users.get(setBy), channels.get(channel).getTopic(), topic);
+        }
+
         channels.get(channel).setTopic(topic, date, setBy);
     }
 
