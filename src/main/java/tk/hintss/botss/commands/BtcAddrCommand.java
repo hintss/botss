@@ -1,4 +1,4 @@
-package tk.hintss.botss.commands;
+/*package tk.hintss.botss.commands;
 
 import info.blockchain.api.APIException;
 import info.blockchain.api.blockexplorer.Address;
@@ -11,9 +11,6 @@ import tk.hintss.botss.Command;
 import java.io.IOException;
 import java.text.DecimalFormat;
 
-/**
- * Created by Henry on 12/30/2014.
- */
 public class BtcAddrCommand extends Command {
     @Override
     public void execute(Botss bot, BotMessage bm, String... args) {
@@ -57,3 +54,4 @@ public class BtcAddrCommand extends Command {
         return new String[] {"btc", "bitcoin"};
     }
 }
+*/
