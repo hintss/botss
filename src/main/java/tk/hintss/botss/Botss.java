@@ -78,13 +78,13 @@ public class Botss extends PircBot {
 
         Set<Class<? extends MessageListener>> topicListeners = reflections.getSubTypesOf(MessageListener.class);
 
-        for (Class messageListener : messageListeners) {
+        for (Class topicListener : topicListeners) {
             try {
-                TopicListener listener = (TopicListener) messageListener.newInstance();
+                TopicListener listener = (TopicListener) topicListener.newInstance();
 
                 this.topicListeners.add(listener);
 
-                System.out.println("loaded " + messageListener.getSimpleName());
+                System.out.println("loaded " + topicListener.getSimpleName());
             } catch (InstantiationException | IllegalAccessException e) {
                 e.printStackTrace();
             }
