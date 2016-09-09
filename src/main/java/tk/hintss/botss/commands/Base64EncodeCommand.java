@@ -7,9 +7,6 @@ import tk.hintss.botss.Command;
 
 import java.util.Base64;
 
-/**
- * Created by Henry on 1/5/2015.
- */
 public class Base64EncodeCommand extends Command {
     @Override
     public void execute(Botss bot, BotMessage bm, String... args) {

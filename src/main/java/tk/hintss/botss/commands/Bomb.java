@@ -11,9 +11,6 @@ import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-/**
- * Created by hints on 10/17/2015.
- */
 public class Bomb extends Command {
     private static List<String> PASSWORDS = Arrays.asList("about", "after", "again", "below", "could",
                                                           "every", "first", "found", "great", "house",

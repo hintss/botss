@@ -4,9 +4,6 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
 
-/**
- * Created by Henry on 12/30/2014.
- */
 public class BotChannel implements Messageable {
     private final String name;
 
@@ -14,7 +11,7 @@ public class BotChannel implements Messageable {
 
     private String topicSetter;
     private long topicChangeTime;
-    private String modes;
+    // private String modes;
 
     private Set<BotUser> users = new HashSet<>();
 

@@ -10,9 +10,6 @@ import tk.hintss.botss.BotMessage;
 import tk.hintss.botss.Botss;
 import tk.hintss.botss.Command;
 
-/**
- * Created by Henry on 12/30/2014.
- */
 public class QrCommand extends Command {
     @Override
     public void execute(Botss bot, BotMessage bm, String... args) {
@@ -56,9 +53,7 @@ public class QrCommand extends Command {
     }
 
     private int getPixelAt(ByteMatrix matrix, int x, int y) {
-        if (x < 0) {
-            return 0;
-        } else if (y < 0) {
+        if ((x < 0) || (y < 0)) {
             return 0;
         } else if (x >= matrix.getWidth()) {
             return 0;

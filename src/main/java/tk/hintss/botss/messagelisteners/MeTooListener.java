@@ -5,9 +5,6 @@ import tk.hintss.botss.Botss;
 import tk.hintss.botss.MessageListener;
 import tk.hintss.botss.Messageable;
 
-/**
- * Created by Henry on 3/26/2015.
- */
 public class MeTooListener implements MessageListener {
 
     @Override
@@ -28,7 +25,7 @@ public class MeTooListener implements MessageListener {
             }
         }
 
-        if (count >= 2 + bot.rand.nextInt(3)) {
+        if (count >= (2 + bot.rand.nextInt(3))) {
             if (bm.getMessage().equals("^")) {
                 bot.sendFormattedMessage(channel, "^");
             } else if (bm.getMessage().equalsIgnoreCase("lol")) {

@@ -10,9 +10,6 @@ import tk.hintss.botss.Command;
 
 import java.io.IOException;
 
-/**
- * Created by Henry on 1/4/2015.
- */
 public class MinecraftPingCommand extends Command {
     @Override
     public void execute(Botss bot, BotMessage bm, String... args) {
@@ -28,7 +25,7 @@ public class MinecraftPingCommand extends Command {
             try {
                 port = Integer.parseInt(args[1]);
 
-                if (port < 1 || port > 65535) {
+                if ((port < 1) || (port > 65535)) {
                     bot.reply(bm, Colors.RED + "Invalid port number '" + port + "'!");
 
                     return;

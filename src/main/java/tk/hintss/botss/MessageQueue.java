@@ -2,12 +2,16 @@ package tk.hintss.botss;
 
 import java.util.ArrayList;
 
-/**
- * Created by Henry on 1/25/2015.
- */
 public class MessageQueue {
-    int size = 50;
-    ArrayList<BotMessage> list = new ArrayList<>();
+    private int size = 50;
+    private ArrayList<BotMessage> list = new ArrayList<>(size);
+
+    public MessageQueue() {
+    }
+
+    public MessageQueue(int size) {
+        this.size = size;
+    }
 
     public void addMessage(BotMessage message) {
         list.add(0, message);

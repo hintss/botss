@@ -7,9 +7,6 @@ import tk.hintss.botss.Botss;
 import tk.hintss.botss.Command;
 import tk.hintss.botss.Messageable;
 
-/**
- * Created by Henry on 12/30/2014.
- */
 public class HelpCommand extends Command {
     @Override
     public void execute(Botss bot, BotMessage bm, String... args) {

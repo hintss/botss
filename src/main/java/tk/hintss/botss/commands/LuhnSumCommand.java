@@ -6,9 +6,6 @@ import tk.hintss.botss.Botss;
 import tk.hintss.botss.Command;
 import tk.hintss.botss.util.NumberUtil;
 
-/**
- * Created by Henry on 1/2/2015.
- */
 public class LuhnSumCommand extends Command {
     @Override
     public void execute(Botss bot, BotMessage bm, String... args) {

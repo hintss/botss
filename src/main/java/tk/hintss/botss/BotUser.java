@@ -4,9 +4,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-/**
- * Created by Henry on 12/30/2014.
- */
 public class BotUser implements Messageable {
     private String nick;
 
@@ -54,21 +51,22 @@ public class BotUser implements Messageable {
     }
 
     public String getHostmask() {
-        return (getNick() + "!" + getUser() + "@" + getHost());
+        return getNick() + '!' + getUser() + '@' + getHost();
     }
 
     public HashSet<BotChannel> getChannels() {
         return new HashSet<>(channels);
     }
 
-    protected void setChannels(HashSet<BotChannel> newChannels) {
-        this.channels = newChannels;
+    protected void setChannels(Set<BotChannel> newChannels) {
+        channels = newChannels;
     }
 
     protected void said(BotMessage message) {
         lastSentMessages.addMessage(message);
     }
 
+    @Override
     public void sent(BotMessage message) {
         lastPrivateMessages.addMessage(message);
     }
@@ -77,6 +75,7 @@ public class BotUser implements Messageable {
         return lastSentMessages.getMessages();
     }
 
+    @Override
     public List<BotMessage> getLastMessages() {
         return lastPrivateMessages.getMessages();
     }

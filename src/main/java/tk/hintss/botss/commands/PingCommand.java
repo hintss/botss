@@ -5,9 +5,6 @@ import tk.hintss.botss.BotMessage;
 import tk.hintss.botss.Botss;
 import tk.hintss.botss.Command;
 
-/**
- * Created by Henry on 12/30/2014.
- */
 public class PingCommand extends Command {
     @Override
     public void execute(Botss bot, BotMessage bm, String... args) {
@@ -18,7 +15,7 @@ public class PingCommand extends Command {
 
             for (String arg : args) {
                 sb.append(arg);
-                sb.append(" ");
+                sb.append(' ');
             }
 
             bot.reply(bm, sb.toString());

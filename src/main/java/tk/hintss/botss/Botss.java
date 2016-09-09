@@ -6,37 +6,30 @@ import org.jibble.pircbot.User;
 import org.reflections.Reflections;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Random;
-import java.util.Set;
+import java.util.*;
 
-/**
- * Created by Henry on 12/30/2014.
- */
 public class Botss extends PircBot {
     public static final String commandPrefix = "]";
 
     public BotUser me;
 
-    public HashMap<String, Command> commands = new HashMap<>();
-    public HashMap<String, String> aliases = new HashMap<>();
+    public Map<String, Command> commands = new HashMap<>();
+    public Map<String, String> aliases = new HashMap<>();
 
-    public ArrayList<MessageListener> messageListeners = new ArrayList<>();
-    public ArrayList<TopicListener> topicListeners = new ArrayList<>();
+    public List<MessageListener> messageListeners = new ArrayList<>();
+    public List<TopicListener> topicListeners = new ArrayList<>();
 
-    public HashMap<String, BotChannel> channels = new HashMap<>();
-    public HashMap<String, BotUser> users = new HashMap<>();
+    public Map<String, BotChannel> channels = new HashMap<>();
+    public Map<String, BotUser> users = new HashMap<>();
 
     public Random rand = new Random();
 
     public Botss() {
-        this.setName("botss");
-        this.setAutoNickChange(true);
-        this.setFinger("hintss");
-        this.setLogin("hintss");
-        this.setVersion("botss by hintss, using PircBot 1.5.0.");
+        setName("botss");
+        setAutoNickChange(true);
+        setFinger("hintss");
+        setLogin("hintss");
+        setVersion("botss by hintss, using PircBot 1.5.0.");
 
         Reflections reflections = new Reflections("tk.hintss.botss.commands");
 
@@ -325,14 +318,10 @@ public class Botss extends PircBot {
 
         BotMessage bm = new BotMessage(message, me, target);
         me.said(bm);
-        if (target instanceof BotChannel) {
-            ((BotChannel) target).sent(bm);
-        } else if (target instanceof BotUser) {
-            ((BotUser) target).sent(bm);
-        }
+        target.sent(bm);
     }
 
     public void reply(BotMessage bm, String message) {
-        sendFormattedMessage(bm.getSender(), bm.getReplyTarget(), message);
+        sendFormattedMessage(bm.getSender(), bm.getReplyTarget(), bm.getSender().getNick() + ": " + message);
     }
 }

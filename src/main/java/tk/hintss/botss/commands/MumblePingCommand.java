@@ -13,9 +13,6 @@ import java.net.DatagramSocket;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 
-/**
- * Created by Henry on 12/30/2014.
- */
 public class MumblePingCommand extends Command {
     @Override
     public void execute(Botss bot, BotMessage bm, String... args) {
@@ -31,7 +28,7 @@ public class MumblePingCommand extends Command {
             try {
                 port = Integer.parseInt(args[1]);
 
-                if (port < 1 || port > 65535) {
+                if ((port < 1) || (port > 65535)) {
                     bot.reply(bm, Colors.RED + "Invalid port number '" + port + "'!");
 
                     return;
