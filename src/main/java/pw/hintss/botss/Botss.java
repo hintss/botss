@@ -31,7 +31,7 @@ public class Botss extends PircBot {
         setLogin("hintss");
         setVersion("botss by hintss, using PircBot 1.5.0.");
 
-        Reflections reflections = new Reflections("tk.hintss.botss.commands");
+        Reflections reflections = new Reflections("pw.hintss.botss.commands");
 
         Set<Class<? extends Command>> commandClasses = reflections.getSubTypesOf(Command.class);
 
