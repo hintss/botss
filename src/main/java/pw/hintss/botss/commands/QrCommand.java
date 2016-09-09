@@ -1,4 +1,4 @@
-package tk.hintss.botss.commands;
+package pw.hintss.botss.commands;
 
 import com.google.zxing.WriterException;
 import com.google.zxing.qrcode.decoder.ErrorCorrectionLevel;
@@ -6,9 +6,9 @@ import com.google.zxing.qrcode.encoder.ByteMatrix;
 import com.google.zxing.qrcode.encoder.Encoder;
 import com.google.zxing.qrcode.encoder.QRCode;
 import org.jibble.pircbot.Colors;
-import tk.hintss.botss.BotMessage;
-import tk.hintss.botss.Botss;
-import tk.hintss.botss.Command;
+import pw.hintss.botss.Botss;
+import pw.hintss.botss.BotMessage;
+import pw.hintss.botss.Command;
 
 public class QrCommand extends Command {
     @Override

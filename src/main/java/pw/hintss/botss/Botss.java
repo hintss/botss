@@ -1,4 +1,4 @@
-package tk.hintss.botss;
+package pw.hintss.botss;
 
 import org.jibble.pircbot.IrcException;
 import org.jibble.pircbot.PircBot;

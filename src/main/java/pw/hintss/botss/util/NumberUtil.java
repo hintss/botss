@@ -1,4 +1,4 @@
-package tk.hintss.botss.util;
+package pw.hintss.botss.util;
 
 import java.util.ArrayList;
 import java.util.Collections;

@@ -1,4 +1,4 @@
-package tk.hintss.botss;
+package pw.hintss.botss;
 
 public class Command {
     public void execute(Botss bot, BotMessage bm, String... args) {

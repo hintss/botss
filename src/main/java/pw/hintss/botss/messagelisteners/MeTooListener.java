@@ -1,9 +1,9 @@
-package tk.hintss.botss.messagelisteners;
+package pw.hintss.botss.messagelisteners;
 
-import tk.hintss.botss.BotMessage;
-import tk.hintss.botss.Botss;
-import tk.hintss.botss.MessageListener;
-import tk.hintss.botss.Messageable;
+import pw.hintss.botss.Botss;
+import pw.hintss.botss.BotMessage;
+import pw.hintss.botss.MessageListener;
+import pw.hintss.botss.Messageable;
 
 public class MeTooListener implements MessageListener {
 

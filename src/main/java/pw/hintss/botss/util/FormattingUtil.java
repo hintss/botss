@@ -1,4 +1,4 @@
-package tk.hintss.botss.util;
+package pw.hintss.botss.util;
 
 import org.jibble.pircbot.Colors;
 

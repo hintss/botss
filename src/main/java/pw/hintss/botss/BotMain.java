@@ -1,4 +1,4 @@
-package tk.hintss.botss;
+package pw.hintss.botss;
 
 public class BotMain {
     public static void main(String[] args) throws Exception {

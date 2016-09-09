@@ -1,9 +1,9 @@
-package tk.hintss.botss.commands;
+package pw.hintss.botss.commands;
 
 import org.jibble.pircbot.Colors;
-import tk.hintss.botss.BotMessage;
-import tk.hintss.botss.Botss;
-import tk.hintss.botss.Command;
+import pw.hintss.botss.BotMessage;
+import pw.hintss.botss.Botss;
+import pw.hintss.botss.Command;
 
 import java.util.Base64;
 
