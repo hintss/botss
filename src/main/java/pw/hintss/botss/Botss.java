@@ -95,10 +95,12 @@ public class Botss extends PircBot {
     }
 
     public void processMessage(String nick, String user, String host, String target, String message) {
-        BotUser botUser = users.get(nick);
+        BotUser sender = users.get(nick);
 
-        if (botUser == null) {
-            botUser = new BotUser(nick, user, host);
+        // if this is a PM from someone not sharing a channel with us
+        // don't save it, to prevent memory leak
+        if (sender == null) {
+            sender = new BotUser(nick, user, host);
         }
 
         Messageable replyTarget = null;
@@ -106,19 +108,19 @@ public class Botss extends PircBot {
         if (target.startsWith("#")) {
             replyTarget = channels.get(target);
         } else {
-            replyTarget = botUser;
+            replyTarget = sender;
         }
 
         // if we picked up this user in the initial channel burst, we won't have their hostmask
-        botUser.setUser(user);
-        botUser.setHost(host);
+        sender.setUser(user);
+        sender.setHost(host);
 
-        BotMessage bm = new BotMessage(message, botUser, replyTarget);
-        botUser.said(bm);
+        BotMessage bm = new BotMessage(message, sender, replyTarget);
+        sender.said(bm);
 
 
         if (replyTarget == null) {
-            botUser.sent(bm);
+            sender.sent(bm);
         } else {
             replyTarget.sent(bm);
         }
@@ -283,11 +285,12 @@ public class Botss extends PircBot {
         HashSet<BotUser> channelUsers = botChannel.getUsers();
         channelUsers.remove(botUser);
         botChannel.setUsers(channelUsers);
+
         HashSet<BotChannel> userChannels = botUser.getChannels();
         userChannels.remove(botChannel);
         botUser.setChannels(userChannels);
 
-        if (botUser.getChannels().size() == 0) {
+        if (botUser.getChannels().isEmpty()) {
             removeUser(nick);
         }
     }
