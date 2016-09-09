@@ -322,6 +322,12 @@ public class Botss extends PircBot {
     }
 
     public void reply(BotMessage bm, String message) {
-        sendFormattedMessage(bm.getSender(), bm.getReplyTarget(), bm.getSender().getNick() + ": " + message);
+        String prefix = "";
+
+        if (bm.getReplyTarget() instanceof BotChannel) {
+            prefix = bm.getSender().getNick() + ": ";
+        }
+
+        sendFormattedMessage(bm.getSender(), bm.getReplyTarget(), prefix + message);
     }
 }
