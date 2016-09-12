@@ -317,6 +317,9 @@ public class Botss extends PircBot {
 
     public void sendFormattedMessage(Messageable target, String message) {
         message = message.replace("\7", "␇"); // replace bels with the bel representative
+        message = message.replace("\r", "\\r");
+        message = message.replace("\n", "\\n");
+        message = message.replace("\t", "\\t");
         sendMessage(target.getTargetName(), message);
 
         BotMessage bm = new BotMessage(message, me, target);
